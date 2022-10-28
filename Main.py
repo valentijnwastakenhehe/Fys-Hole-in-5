@@ -54,10 +54,10 @@ while True:
 	#else:
 	#	wpi.digitalWrite(LED_PIN1,wpi.LOW)
 	
-	if verstreken_tijd > secondes:
-		TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
-		print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE , "\n")
-		break	
+	if verstreken_tijd > secondes:										#Als de verstreken tijd groter is dan ingestelde tijd  
+		TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2							#dan eindigt het spel en word je score weergegeven
+		print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE , "\n")	#
+		break															#
 
 	#OUD SYSTEEM VOOR PUNTEN BEREKENEN
 	#if wpi.digitalRead(LDR_PIN2) == 1:
