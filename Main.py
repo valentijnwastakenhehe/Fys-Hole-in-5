@@ -22,7 +22,7 @@ secondes = 10
 
 while True:
 	wpi.digitalRead(LDR_PIN1)
-	#time.sleep(0.06)
+	time.sleep(0.0612123)
 	huidige_tijd = time.time()
 	verstreken_tijd = huidige_tijd - start_tijd
 
