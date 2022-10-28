@@ -9,3 +9,12 @@ KNOP_PIN = 8 						#GPIO PIN 1,6,3
 wpi.wiringPiSetup()
 wpi.pinMode(SERVO_PIN, wpi.OUTPUT)	#Line 12 t/m 15 bind de variables op Lines 7 t/m 10 	#aan de WPI waarden van de GPIO pins op de Odroid
 wpi.pinMode(KNOP_PIN, wpi.INPUT)	
+
+while True:
+    time.sleep(0.1)
+
+    if wpi.digitalRead(KNOP_PIN) == 1:
+        print('1')
+
+    else:
+        print('0')
