@@ -1,9 +1,8 @@
 import odroid_wiringpi as wpi
 import time
 
-client_loop: send disconnect: Connection reset
-ECHO = 8
 TRIG = 7
+ECHO = 8
 
 print("Ultra sonic metingen")
 
@@ -11,15 +10,15 @@ wpi.wiringPiSetup()
 wpi.pinMode(TRIG, wpi.OUTPUT)
 wpi.pinMode(ECHO, wpi.INPUT)
 
-stop = time.time()
+def distance():
 
+    wpi.digitalWrite(TRIG, wpi.HIGH)
+
+    time.sleep(0.00001)
 wpi.digitalWrite(TRIG, wpi.LOW)
 
-time.sleep(0.5)
-wpi.digitalWrite(TRIG, wpi.HIGH)
-time.sleep(0.00001)
-wpi.digitalWrite(TRIG, wpi.LOW)
 start = time.time()
+stop = time.time()
 
 print("Debug")
 
@@ -30,13 +29,17 @@ while wpi.digitalRead(ECHO) == 1:
    stop = time.time()
    print("Debug1")
 
-elapsed = start-stop
+elapsed = stop-start
 
 afstand = elapsed * 34300
 
 afstand = afstand / 2
+return distance
+
+if __name__ == '__main__':
+    try:
+        while True:
+            dist = distance()
+            print("Gemeten afstand = ", afstand)
+
 print("Afstand = ", afstand)
-print("Start = ", start)
-print("Stop = ", stop)
-print("elapsed = ", elapsed)
-print("time = ", time.time)
