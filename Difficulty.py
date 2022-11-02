@@ -1,3 +1,4 @@
+#Deze code is nog niet klaar, een start voor de difficulty button
 import odroid_wiringpi as wpi
 import time
 
@@ -24,5 +25,5 @@ while True:
                 print ("Difficulty: Hard")
         
 
-            # Wait for 200 milliseconds
+           
             time.sleep(0.2)
