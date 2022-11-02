@@ -33,7 +33,7 @@ while True:
 		LDR_DELAY1 += 1								#
 	
 	else:							#Als de waarde van de LDR niet positief is doet de loop 
-		LDR_DELAY2 += 0				#niks met de variable 
+		LDR_DELAY1 += 0				#niks met de variable 
 
 	if LDR_DELAY1 > 5:				#
 		LDR_SCORE1 += 50			#
