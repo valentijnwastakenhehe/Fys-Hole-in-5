@@ -2,15 +2,11 @@
 import odroid_wiringpi as wpi
 import time
 
-
 PUSH_BUTTON_PIN = 0
-
 
 wpi.wiringPiSetup()
 
-
 wpi.pinMode(PUSH_BUTTON_PIN, wpi.INPUT)
-
 
 while True:
     #If button is pressed once print easy, if button is pressed again print hard. If button is pressed again print east etc.
