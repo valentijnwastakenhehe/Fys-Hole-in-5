@@ -17,12 +17,15 @@ wpi.pinMOde(LED_PIN3, wpi.OUTPUT)
 wpi.pinMode(LDR_PIN1, wpi.INPUT)	
 wpi.pinMode(LDR_PIN2, wpi.INPUT)
 wpi.pinMode(LDR_PIN3, wpi.INPUT)	
-LDR_SCORE1 = 0						#LDR_SCORE1 en 2 zijn de standaard waarde van de score die de 											speler heeft opgebouwd 
-LDR_SCORE2 = 0	
+LDR_SCORE1 = 0						#LDR_SCORE1 en 2 zijn de standaard waarde van de score die
+LDR_SCORE2 = 0						#de speler heeft opgebouwd
 LDR_SCORE3 = 0						#Die we later weer kunnen printen op het scherm
+LDR_SCORE3 = 0						
 LDR_DELAY1 = 0
 LDR_DELAY2 = 0
 LDR_DELAY3 = 0
+
+
 
 start_tijd = time.time()			#Bind de variable start_tijd aan de huidige tijd
 secondes = 10						#Hoelang het spel duurt kan aangepast worden 
@@ -59,8 +62,21 @@ while True:
 	else:
 		wpi.digitalWrite(LED_PIN1,wpi.LOW)
 	
+	if wpi.digitalRead(LDR_PIN3) == 1:
+		wpi.digitalWrite(LED_PIN3, wpi.HIGH)
+		LDR_DELAY3 += 1
+	
+	else:
+		LDR_DELAY3 += 0
+
+	if LDR_DELAY3 > 5:
+		LDR_SCORE3 += 20
+		LDR_DELAY3 = 0
+	else:
+		wpi.digitalWrite(LED_PIN3,wpi.LOW)
+	
 	if verstreken_tijd > secondes:										#Als de verstreken tijd groter is dan ingestelde tijd  
-		TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2							#dan eindigt het spel en word je score weergegeven
+		TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2 + LDR_SCORE3				#dan eindigt het spel en word je score weergegeven
 		print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE , "\n")	#
 		break															#
 
