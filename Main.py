@@ -36,9 +36,9 @@ while True:
 	huidige_tijd = time.time()		#Bind de variable huidige_tijd aan de huidige tijd
 	verstreken_tijd = huidige_tijd - start_tijd		#Berekend de verstreken tijd 
 
-	if wpi.digitalRead(LDR_PIN1) == 1:				#Line 31 t/m 33 Als de LDR een positief signaal geeft 
+	if wpi.digitalRead(LDR_PIN1) == 1:				#Line 39 t/m 41 Als de LDR een positief signaal geeft 
 		wpi.digitalWrite(LED_PIN1, wpi.HIGH)		#telt de loop 1 bij LDR_DELAY1 op 
-		LDR_DELAY1 += 1								#
+		LDR_DELAY1 += 1								
 	
 	else:							#Als de waarde van de LDR niet positief is doet de loop 
 		LDR_DELAY1 += 0				#niks met de variable 
