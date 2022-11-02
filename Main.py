@@ -6,18 +6,23 @@ from multiprocessing import process
 
 LED_PIN1 = 7 						#GPIO PIN 7,9
 LED_PIN2 = 30 						#GPIO PIN 27,30
+LED_PIN3 =							#GPIO PIN 						
 LDR_PIN1 = 8 						#GPIO PIN 1,6,3
 LDR_PIN2 = 9 						#GPIO PIN 17,20,5
+LDR_PIN3 = 							#GPIO PIN 
 wpi.wiringPiSetup()
 wpi.pinMode(LED_PIN1, wpi.OUTPUT)	#Line 12 t/m 15 bind de variables op Lines 7 t/m 10 
 wpi.pinMode(LED_PIN2, wpi.OUTPUT)	#aan de WPI waarden van de GPIO pins op de Odroid
+wpi.pinMOde(LED_PIN3, wpi.OUTPUT)
 wpi.pinMode(LDR_PIN1, wpi.INPUT)	
-wpi.pinMode(LDR_PIN2, wpi.INPUT)	
-LDR_SCORE1 = 0						#LDR_SCORE1 en 2 zijn de standaard waarde van de score die de speler heeft opgebouwd 
-LDR_SCORE2 = 0						#Die we later weer kunnen printen op het scherm
+wpi.pinMode(LDR_PIN2, wpi.INPUT)
+wpi.pinMode(LDR_PIN3, wpi.INPUT)	
+LDR_SCORE1 = 0						#LDR_SCORE1 en 2 zijn de standaard waarde van de score die de 											speler heeft opgebouwd 
+LDR_SCORE2 = 0	
+LDR_SCORE3 = 0						#Die we later weer kunnen printen op het scherm
 LDR_DELAY1 = 0
 LDR_DELAY2 = 0
-
+LDR_DELAY3 = 0
 
 start_tijd = time.time()			#Bind de variable start_tijd aan de huidige tijd
 secondes = 10						#Hoelang het spel duurt kan aangepast worden 
