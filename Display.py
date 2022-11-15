@@ -1,1 +1,5 @@
-print("hello world")
+#imports
+import RPi.GPIO as GPIO
+import time
+
+
