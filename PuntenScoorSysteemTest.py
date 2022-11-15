@@ -1,5 +1,4 @@
-from ast import If
-#from syslog import LOG_WARNING
+from syslog import LOG_WARNING
 from tracemalloc import start
 import odroid_wiringpi as wpi
 import time
@@ -20,27 +19,30 @@ LDR_SCORE2 = 0
 start_tijd = time.time()
 secondes = 4
 
+
 while True:
-    wpi.digitalRead(LDR_PIN1)
+    if wpi.digitalRead(LDR_PIN1) == 1:
+        print(1)
+    else:
+        print(0)
     time.sleep(0.125)
-    huidige_tijd = time.time()
-    verstreken_tijd = huidige_tijd - start_tijd
+    #huidige_tijd = time.time()
+    #verstreken_tijd = huidige_tijd - start_tijd
+    
     
 
-    if wpi.digitalRead(LDR_PIN1) == 1:
-        wpi.digitalRead(LDR_PIN1)
-        while wpi.digitalRead(LDR_PIN1) == 1:
-            wpi.digitalRead(LDR_PIN1)
-            if wpi.digitalRead(LDR_PIN1) == 0:
-                wpi.digitalRead(LDR_PIN1)
-                LDR_SCORE1 += 50
-            break
+    #if wpi.digitalRead(LDR_PIN1) == 1:
+     #   wpi.digitalRead(LDR_PIN1)
+      #  while wpi.digitalRead(LDR_PIN1) == 1:
+       #     wpi.digitalRead(LDR_PIN1)
+        #    if wpi.digitalRead(LDR_PIN1) == 0:
+         #       wpi.digitalRead(LDR_PIN1)
+          #      LDR_SCORE1 += 50
+                
+            
+               
+
+    #if verstreken_tijd > secondes:
+    #    TOTAAL_SCORE = LDR_SCORE1 
+    #    print("\nGame over! \n\nJouw score is:", TOTAAL_SCORE, "\n")
         
-            
-
-            
-
-    if verstreken_tijd > secondes:
-        TOTAAL_SCORE = LDR_SCORE1 
-        print("\nGame over! \n\nJouw score is:", TOTAAL_SCORE, "\n")
-        break
