@@ -45,7 +45,6 @@
 #lcd pin 14 = data 7 : odroid pin 26
 
 import odroid_wiringpi as wpi
-import RPi.GPIO as GPIO
 import time 
 
 #GPIO WPI MAPPING 
