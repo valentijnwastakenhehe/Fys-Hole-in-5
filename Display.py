@@ -56,3 +56,19 @@ LCD_D5 = 5
 LCD_D6 = 6
 LCD_D7 = 11
 #LED_ON
+
+
+#constanten 
+LCD_WIDTH = 16
+LCD_CHR = True
+LCD_CMD = False
+
+LCD_LINE_1 = 0x80 #lcd ram address for the 1st line
+LCD_LINE_2 = 0xC0 # lcd ram address for the 2nd line
+
+#time constants
+E_PULSE = 0.00005
+E_DELAY = 0.00005
+
+def main():
+
