@@ -12,3 +12,6 @@
 import odroid_wiringpi as wpi
 import RPi.GPIO hs GPIO
 import time 
+
+#GPIO WPI MAPPING 
+LCD_RS = 
