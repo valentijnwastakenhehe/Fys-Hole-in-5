@@ -80,18 +80,74 @@ while True:
 		print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE , "\n")	#
 		break															#
 
-	#OUD SYSTEEM VOOR PUNTEN BEREKENEN
-	#if wpi.digitalRead(LDR_PIN2) == 1:
-	#	wpi.digitalWrite(LED_PIN2, wpi.HIGH)
-	#	LDR_SCORE2 += 20
-	#else:
-	#	wpi.digitalWrite(LED_PIN2, wpi.LOW)
-	#
-	#if wpi.digitalRead(LDR_PIN2) == 1:
-	#	wpi.digitalWrite(LED_PIN2, wpi.HIGH)
-	#	LDR_SCORE2 += 20
-	#else:
-	#	wpi.digitalWrite(LED_PIN2, wpi.LOW)
-	#
+	
+
+#import odroid_wiringpi as wpi # pyright: ignore[reportMissingImports]
+#import time
+#
+# Hier zijn de GDIO pinnenen hoe de ledjes en LDRs moeten worden aangesloten. 
+#LED_PIN1 = 7 #GPIO PIN 7 = + ;9 = -
+#LED_PIN2 = 30 #GPIO PIN 27 = +; 30 = +
+#LDR_PIN1 = 8 #GPIO PIN m = 1; - = 6; S = 3
+#LDR_PIN2 = 9 #GPIO PIN m = 17; - = 20; S = 5
+#
+# LDR leest iets af daarom is het input. Lampjes worden aangestuurd. Lasers blijven oneindig aan.
+#
+#wpi.wiringPiSetup()
+#wpi.pinMode(LED_PIN1, wpi.OUTPUT)
+#wpi.pinMode(LED_PIN2, wpi.OUTPUT)
+#wpi.pinMode(LDR_PIN1, wpi.INPUT)
+#wpi.pinMode(LDR_PIN2, wpi.INPUT)
+#
+#LDR_SCORE1 = 0
+#LDR_SCORE2 = 0
+#
+# tijd is geimplementeerd.
+# Hij leest de code voor een aantal seconden.
+#
+#start_time = time.time()
+#seconds = 5
+#signal_old = 0
+#signal_new = 0
+#
+# Een while-loop voor het continu inlezen van de code. 
+# Een time.sleep leest de code over een bepaalde tijd.
+# Ervoor zorgen dat elapsed time 0 is en tot een bepaalde tijd telt.
+#
+#while True:
+#	wpi.digitalRead(LDR_PIN1)
+#	time.sleep(0.125)
+#	current_time = time.time()
+#	elapsed_time = current_time - start_time
+#
+# signal_new om wpi te definieren, omdat het lang is.
+# 
+# Lampje gaat aan.
+# Hij telt 50 punten op bij de score. 
+#    signal_new = wpi.digitalRead(LDR_PIN1)
+#	if signal_new == 1 and signal_old == 0:
+#		wpi.digitalWrite(LED_PIN1, wpi.HIGH)
+#		LDR_SCORE1 += 50
+#
+#	else:
+#		wpi.digitalWrite(LED_PIN1, wpi.LOW)
+#   	signal_old = signal_new
+#
+#    signal_newer = wpi.digitalRead(LDR_PIN2)
+#	if signal_newer == 1 and signal_old == 0:
+#		wpi.digitalWrite(LED_PIN2, wpi.HIGH)
+#		LDR_SCORE2 += 20
+#	else:
+#		wpi.digitalWrite(LED_PIN2, wpi.LOW)
+#	   signal_old = signal_newer
+#        
+# Als aftel tijd hoger is dan aantal secondes,
+# Tel dan de scores bij elkaar op.
+#
+#	if elapsed_time > seconds:
+#		TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
+#		print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
+#		break
+#
 	
 		
