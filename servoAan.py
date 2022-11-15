@@ -1,9 +1,9 @@
-import odroid_ wiringPi as wpi
+import odroid_wiringpi as wpi
 import time
 
 START_BUTTON_PIN = 0
 
-wpi.wiringPi.Setup()
+wpi.wiringPiSetup()
 #pin 0 is input
 wpi.pinMode(START_BUTTON_PIN, wpi.INPUT)
 
