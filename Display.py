@@ -67,8 +67,18 @@ LCD_LINE_1 = 0x80 #lcd ram address for the 1st line
 LCD_LINE_2 = 0xC0 # lcd ram address for the 2nd line
 
 #time constants
-E_PULSE = 0.00005
-E_DELAY = 0.00005
+#E_PULSE = 0.00005
+#E_DELAY = 0.00005
 
-def main():
+while True:
 
+    # date and time
+    lcd_line_1 = datetime.now().strftime('%b %d  %H:%M:%S\n')
+
+    # current ip address
+    lcd_line_2 = "IP " + ip_address
+
+    # combine both lines into one update to the display
+    lcd.message = lcd_line_1 + lcd_line_2
+
+    sleep(2)
