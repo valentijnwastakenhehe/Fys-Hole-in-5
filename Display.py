@@ -1,6 +1,8 @@
 import smbus
 import time
+#import __main__
 
+LDR_score1 = 0
 # Define device parameters
 I2C_ADDR = 0x27  # I2C device address, if any error,
 # change this address to 0x3f
@@ -71,19 +73,22 @@ def lcd_string(message, line):
 
 # Main program block, # Initialize display
 def main():
+    global LDR_score1
     lcd_init()
 
     # Send text to I2C TWI 1602 16x2 Serial LCD Module Display
     while True:
-        lcd_string("Je moeder!", LCD_LINE_1)
-        lcd_string("Ibn al kalb", LCD_LINE_2)
 
-        time.sleep(3)
+        LDR_score1 += 50
+        lcd_string(str(LDR_score1), LCD_LINE_1)
 
-        lcd_string("tyfus", LCD_LINE_1)
-        lcd_string("tyfus", LCD_LINE_2)
 
-        time.sleep(3)
+        #time.sleep(1)
+
+ #       lcd_string("tyfus", LCD_LINE_1)
+  #      lcd_string("tyfus", LCD_LINE_2)
+
+       # time.sleep(3)
 
 
 # Handling keyboard interrupts and exception utility
