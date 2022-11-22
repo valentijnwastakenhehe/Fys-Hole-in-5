@@ -14,6 +14,5 @@ while True:
     #If button is pressed once print easy.
     button_state = wpi.digitalRead(PUSH_BUTTON_PIN)
     if button_state == wpi.LOW:
-       # if button_state == wpi.HIGH:
-            print("appel")
-            time.sleep(0.2)
+        print("appel")
+        time.sleep(0.2)
