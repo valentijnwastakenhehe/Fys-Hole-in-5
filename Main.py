@@ -1,4 +1,5 @@
-import odroid_wiringpi as wpi 
+def main{
+import odroid_wiringpi as wpi
 import time
 
 #Hier zijn de GDIO pinnenen hoe de ledjes en LDRs moeten worden aangesloten. 
@@ -67,7 +68,7 @@ while True:
 		TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
 		print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
 		break
-
+}
 	
 #		OUDE CODE 		
 #
