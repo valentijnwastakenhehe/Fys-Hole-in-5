@@ -18,3 +18,41 @@ while True:
 
     else:
         print('0')
+
+Gepakt van bron: https://tutorials-raspberrypi.com/raspberry-pi-servo-motor-control/
+
+#import odroid_wiringpi as wpi
+#import time
+#
+#SIG_PIN = 12
+#
+#wpi.wiringPiSetup()
+#wpi.pinMode(SIG_PIN, wpi.OUTPUT)
+#
+#hertz = wpi.digitalWrite(SIG_PIN, 50)
+#hertz.start(2.5)
+#try:
+#  while True:
+#    hertz.ChangeDutyCycle(5)
+#    time.sleep(0.5)
+#
+#    hertz.ChangeDutyCycle(7.5)
+#    time.sleep(0.5)
+#
+#    hertz.ChangeDutyCycle(10)
+#    time.sleep(0.5)
+#
+#    hertz.ChangeDutyCycle(12.5)
+#    time.sleep(0.5)
+#
+#    hertz.ChangeDutyCycle(10)
+#    time.sleep(0.5)
+#
+#    hertz.ChangeDutyCycle(7.5)
+#    time.sleep(0.5)
+#
+#    hertz.ChangeDutyCycle(5)
+#    time.sleep(0.5)
+#
+#    hertz.ChangeDutyCycle(2.5)
+#    time.sleep(0.5)
