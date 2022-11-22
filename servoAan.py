@@ -20,16 +20,16 @@ while True:
          #for loop in python (kuttaal) die van -500 naar 500 gaat met stappen van +2
          servoSpin = 0
          for servoSpin in range(-500, 500, 2):
-         wpi.pwmWrite(SERVO_PIN, servoSpin)
-         time.sleep(0.03)
-         print(servoSpin)
+            wpi.pwmWrite(SERVO_PIN, servoSpin)
+            time.sleep(0.03)
+            print(servoSpin)
 
      else:
          #for loop die van 500 naar -500 gaat in stappen van -1
          for servoSpin in range (500, -500, -1):
-         wpi.pwmWrite(SERVO_PIN, servoSpin)
-         time.sleep(0.03)
-         print(servoSpin)
+            wpi.pwmWrite(SERVO_PIN, servoSpin)
+            time.sleep(0.03)
+            print(servoSpin)
 
 #wait 200ms
      time.sleep(0.2)
