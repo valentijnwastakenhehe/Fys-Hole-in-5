@@ -1,6 +1,9 @@
 # import the time module
 import time
 
+
+
+
 # define the countdown func.
 def countdown(t):
 	
@@ -11,11 +14,11 @@ def countdown(t):
 		time.sleep(1)
 		t -= 1
 	
-	print('Fire in the hole!!')
+	print('game over!!!!')
 
 
 # input time in seconds
-t = input("Enter the time in seconds: ")
+t = 10
 
 # function call
 countdown(int(t))
