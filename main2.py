@@ -6,46 +6,38 @@ import smbus
 # Apparaatparameters definiëren
 I2C_ADDR = 0x27  
 LCD_WIDTH = 16  # Maximum aantal tekens per regel
-
-# Define device constants
-LCD_CHR = 1  # Mode - Sending data
-LCD_CMD = 0  # Mode - Sending command
-
-LCD_LINE_1 = 0x80  # LCD RAM address for the 1st line
-LCD_LINE_2 = 0xC0  # LCD RAM address for the 2nd line
-LCD_LINE_3 = 0x94  # LCD RAM address for the 3rd line
-LCD_LINE_4 = 0xD4  # LCD RAM address for the 4th line
-
-LCD_BACKLIGHT = 0x08  # On
+# Definieer apparaatconstanten
+LCD_CHR = 1  # Modus - Gegevens verzenden
+LCD_CMD = 0  # Modus - Opdracht verzenden
+LCD_LINE_1 = 0x80  # LCD RAM-adres voor de 1e regel
+LCD_LINE_2 = 0xC0  # LCD RAM-adres voor de 2e regel
+LCD_LINE_3 = 0x94  # LCD RAM-adres voor de 3e regel
+LCD_LINE_4 = 0xD4  # LCD RAM-adres voor de 4e regel
+LCD_BACKLIGHT = 0x08  # Aan
 ENABLE = 0b00000100  # Enable bit
-
-# Timing constants
+# Timing constanten
 E_PULSE = 0.0005
 E_DELAY = 0.0005
-
-# Open I2C interface
-bus = smbus.SMBus(0)  # Open I2C interface for ODROID-C2
-
+# Open I2C-interface
+bus = smbus.SMBus(0)  
 #Hier zijn de GDIO pinnenen hoe de ledjes en LDRs moeten worden aangesloten. 
 LED_PIN1 = 7 	#GPIO PIN 7 = + ;9 = -
 LED_PIN2 = 30 	#GPIO PIN 27 = +; 30 = +
 LDR_PIN1 = 15 	#GPIO PIN m = 1; - = 6; S = 8
 LDR_PIN2 = 16 	#GPIO PIN m = 17; - = 20; S = 10
-
 # LDR leest iets af daarom is het input. Lampjes worden aangestuurd. Lasers blijven oneindig aan.
-
 wpi.wiringPiSetup()
 wpi.pinMode(LED_PIN1, wpi.OUTPUT)
 wpi.pinMode(LED_PIN2, wpi.OUTPUT)
 wpi.pinMode(LDR_PIN1, wpi.INPUT)
 wpi.pinMode(LDR_PIN2, wpi.INPUT)
-
+# Score per LDR
 LDR_SCORE1 = 0
 LDR_SCORE2 = 0
+start_time = time.time()
+seconds = 5 
 
-
-
-# Initialise display
+# Display initialiseren
 def lcd_init():
     lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
     lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
@@ -56,7 +48,7 @@ def lcd_init():
     time.sleep(E_DELAY)
 
 
-# Send byte to data pins
+# Stuur byte naar datapinnen
 # (#bits = the data, #mode = 1 for data or 0 for command)
 def lcd_byte(bits, mode):
     bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
@@ -78,7 +70,7 @@ def lcd_toggle_enable(bits):
     time.sleep(E_DELAY)
 
 
-# Send string to display
+# Tekenreeks verzenden om weer te geven
 def lcd_string(message, line):
     message = message.ljust(LCD_WIDTH, " ")
 
@@ -88,32 +80,12 @@ def lcd_string(message, line):
         lcd_byte(ord(message[i]), LCD_CHR)
 
 
-# Main program block, # Initialize display
-
-
-    # Send text to I2C TWI 1602 16x2 Serial LCD Module Display
-    
-
-
-# Handling keyboard interrupts and exception utility
-
-
-
-
-#tijd is geimplementeerd.
-#Hij leest de code voor een aantal seconden.
-
-
-
 #Een while-loop voor het continu inlezen van de code. 
 #Een time.sleep leest de code over een bepaalde tijd.
 #Ervoor zorgen dat elapsed time 0 is en tot een bepaalde tijd telt.
 #signal_new om wpi te definieren, omdat het lang is.
 #Lampje gaat aan.
 #Hij telt 50 punten op bij de score.
-
-start_time = time.time()
-seconds = 5 
 
 while True:
 	wpi.digitalRead(LDR_PIN1)
@@ -142,13 +114,12 @@ while True:
 		wpi.digitalWrite(LED_PIN2, wpi.LOW)
 		signal_old = signal_newer
         
-# Als aftel tijd hoger is dan aantal secondes,
-# Tel dan de scores bij elkaar op.
 
-	if elapsed_time > seconds:
+    if elapsed_time > seconds:
 		TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
 		print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
 		break
+
 
 def main():
     lcd_init()
