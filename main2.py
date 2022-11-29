@@ -113,6 +113,9 @@ def lcd_string(message, line):
 #Lampje gaat aan.
 #Hij telt 50 punten op bij de score.
 
+start_time = time.time()
+seconds = 5 
+
 while True:
 	wpi.digitalRead(LDR_PIN1)
 	time.sleep(0.125)
@@ -153,12 +156,13 @@ def main():
 
     while True:
         lcd_string("GAME OVER!", LCD_LINE_1)
-        lcd_string("Jouw score is:", LCD_LINE_2)
+        lcd_string(" ", LCD_LINE_2)
 
         time.sleep(3)
 
-        lcd_string(TOTAAL_SCORE, LCD_LINE_1)
-        lcd_string(TOTAAL_SCORE, LCD_LINE_2)
+        lcd_string("Jouw score is:", LCD_LINE_1)
+        lcd_string(str(TOTAAL_SCORE), LCD_LINE_2)
+        
 
         time.sleep(3)
 
