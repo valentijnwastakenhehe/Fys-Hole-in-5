@@ -3,10 +3,9 @@ import time
 import smbus
 
 
-# Define device parameters
-I2C_ADDR = 0x27  # I2C device address, if any error,
-# change this address to 0x3f
-LCD_WIDTH = 16  # Maximum characters per line
+# Apparaatparameters definiëren
+I2C_ADDR = 0x27  
+LCD_WIDTH = 16  # Maximum aantal tekens per regel
 
 # Define device constants
 LCD_CHR = 1  # Mode - Sending data
