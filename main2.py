@@ -87,33 +87,21 @@ def lcd_string(message, line):
     for i in range(LCD_WIDTH):
         lcd_byte(ord(message[i]), LCD_CHR)
 
+# define the countdown func.
+def countdown(t):
+	
+	while t:
+		mins, secs = divmod(t, 60)
+		timer = '{:02d}:{:02d}'.format(mins, secs)
+		print(timer, end="\r")
+		time.sleep(1)
+		t -= 1
 
-# Main program block, # Initialize display
+t = 10
 
-
-    # Send text to I2C TWI 1602 16x2 Serial LCD Module Display
-    
-
-
-# Handling keyboard interrupts and exception utility
-
-
-
-
-#tijd is geimplementeerd.
-#Hij leest de code voor een aantal seconden.
-
-
-
-#Een while-loop voor het continu inlezen van de code. 
-#Een time.sleep leest de code over een bepaalde tijd.
-#Ervoor zorgen dat elapsed time 0 is en tot een bepaalde tijd telt.
-#signal_new om wpi te definieren, omdat het lang is.
-#Lampje gaat aan.
-#Hij telt 50 punten op bij de score.
 
 start_time = time.time()
-seconds = 5 
+
 
 while True:
 	wpi.digitalRead(LDR_PIN1)
@@ -145,7 +133,7 @@ while True:
 # Als aftel tijd hoger is dan aantal secondes,
 # Tel dan de scores bij elkaar op.
 
-	if elapsed_time > seconds:
+	if elapsed_time > t:
 		TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
 		print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
 		break
