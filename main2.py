@@ -104,6 +104,7 @@ start_time = time.time()
 
 
 while True:
+    countdown(int(t))
 	wpi.digitalRead(LDR_PIN1)
 	time.sleep(0.125)
 	current_time = time.time()
