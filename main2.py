@@ -104,40 +104,34 @@ start_time = time.time()
 
 
 while True:
+    wpi.digitalRead(LDR_PIN1)
+    time.sleep(0.125)
     countdown(int(t))
-	wpi.digitalRead(LDR_PIN1)
-	time.sleep(0.125)
-	current_time = time.time()
-	elapsed_time = current_time - start_time
-	signal_new = wpi.digitalRead(LDR_PIN1)
-	signal_newer = wpi.digitalRead(LDR_PIN2)
+    current_time = time.time()
+    elapsed_time = current_time - start_time
+    signal_new = wpi.digitalRead(LDR_PIN1)
+    signal_newer = wpi.digitalRead(LDR_PIN2)
 		
-	if signal_new == 1 and signal_old == 0:
-		wpi.digitalWrite(LED_PIN1, wpi.HIGH)
-		LDR_SCORE1 += 50
-
-	else:
-			
-		wpi.digitalWrite(LED_PIN1, wpi.LOW)
-		signal_old = signal_new
-		
-	
-	if signal_newer == 1 and signal_old == 0:
-		wpi.digitalWrite(LED_PIN2, wpi.HIGH)
-		LDR_SCORE2 += 20
-	
-	else:
-		
-		wpi.digitalWrite(LED_PIN2, wpi.LOW)
-		signal_old = signal_newer
+    if signal_new == 1 and signal_old == 0:
+        wpi.digitalWrite(LED_PIN1, wpi.HIGH)
+        LDR_SCORE1 += 50
+    
+    else:
+        wpi.digitalWrite(LED_PIN1, wpi.LOW)
+        signal_old = signal_new
         
-# Als aftel tijd hoger is dan aantal secondes,
-# Tel dan de scores bij elkaar op.
-
-	if elapsed_time > t:
-		TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
-		print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
-		break
+    if signal_newer == 1 and signal_old == 0:
+        wpi.digitalWrite(LED_PIN2, wpi.HIGH)
+        LDR_SCORE2 += 20
+    
+    else:
+        wpi.digitalWrite(LED_PIN2, wpi.LOW)
+        signal_old = signal_newer
+        
+    if elapsed_time > t:
+        TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
+        print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
+        break
 
 def main():
     lcd_init()
