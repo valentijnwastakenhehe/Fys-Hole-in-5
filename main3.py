@@ -121,7 +121,7 @@ def main():
 
         time.sleep(3)
 
-        lcd_string("Jouw score is:" LCD_LINE_1)
+        lcd_string("Jouw score is:", LCD_LINE_1)
         lcd_string(str(TOTAAL_SCORE), LCD_LINE_2)
 
         time.sleep(3)
