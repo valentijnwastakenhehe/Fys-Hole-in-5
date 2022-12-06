@@ -97,7 +97,7 @@ def countdown(t):
 		time.sleep(1)
 		t -= 1
 
-t = 10
+t = 100000
 
 
 start_time = time.time()
