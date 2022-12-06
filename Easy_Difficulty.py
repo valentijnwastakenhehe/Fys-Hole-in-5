@@ -1,4 +1,3 @@
-#Deze code is nog niet klaar, een start voor de difficulty button
 import odroid_wiringpi as wpi
 import time
 
@@ -14,5 +13,5 @@ while True:
     #If button is pressed once print easy.
     button_state = wpi.digitalRead(PUSH_BUTTON_PIN)
     if button_state == wpi.LOW:
-        print("appel")
+        print("easy")
         time.sleep(0.2)
