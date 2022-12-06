@@ -1,4 +1,4 @@
-Gebruikte bron = https://www.raspberrypi-spy.co.uk/2012/12/ultrasonic-distance-measurement-using-python-part-1/
+# Gebruikte bron = https://www.raspberrypi-spy.co.uk/2012/12/ultrasonic-distance-measurement-using-python-part-1/
 
 import odroid_wiringpi as wpi
 import time
@@ -24,7 +24,7 @@ wpi.pinMode(LED, wpi.OUTPUT)
 # While loop, zodat de waardes constant worden ingelezen.
 while True:
 
-# Stop wordt gedefiëerd.
+# Stop wordt gedefiniëerd.
 # Trigger staat eerst uit.
         stop = time.time()
         wpi.digitalWrite(TRIG, wpi.LOW)
