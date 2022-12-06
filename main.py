@@ -45,8 +45,8 @@ wpi.pinMode(LED_PIN2, wpi.OUTPUT)
 #wpi.pinMode(LED_PIN3, wpi.OUTPUT)      # Kijk comment line 32
 #wpi.pinMode(LED_PIN4, wpi.OUTPUT)
 #wpi.pinMode(LED_PIN5, wpi.OUTPUT)
-wpi.pinmode(LDR_PIN1, wpi.INPUT)
-wpi.pinmode(LDR_PIN2, wpi.INPUT)
+wpi.pinMode(LDR_PIN1, wpi.INPUT)
+wpi.pinMode(LDR_PIN2, wpi.INPUT)
 #wpi.pinmode(LDR_PIN3, wpi.INPUT)
 #wpi.pinmode(LDR_PIN4, wpi.INPUT)
 #wpi.pinmode(LDR_PIN5, wpi.INPUT)
@@ -90,7 +90,7 @@ def lcd_string(message, line):
 
     lcd_byte(line, LCD_CMD)
 
-    for i in range(LCD_WIDTH)
+    for i in range(LCD_WIDTH):
         lcd_byte(ord(message[i]), LCD_CHR)
 
 # Countdown functie 
