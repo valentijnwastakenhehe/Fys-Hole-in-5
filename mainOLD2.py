@@ -1,7 +1,7 @@
 import odroid_wiringpi as wpi 
 import time
 import smbus
-import playsound from playsound 
+from playsound import playsound 
 
 
 # Apparaatparameters definiëren
@@ -98,7 +98,7 @@ def countdown(t):
 		time.sleep(1)
 		t -= 1
 
-t = 100000
+t = 5
 
 
 start_time = time.time()
@@ -131,7 +131,7 @@ while True:
         
     if elapsed_time > t:
         TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
-        playsound('/root/it101-3/Audio/mario.wav')
+        playsound('/root/it101-3/Audio/winnaar.wav')
         print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
         break
 
