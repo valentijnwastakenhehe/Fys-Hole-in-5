@@ -2,7 +2,8 @@ import odroid_wiringpi as wpi
 import time
 import smbus
 from playsound import playsound 
-
+import pygame
+import os
 
 # Apparaatparameters definiëren
 I2C_ADDR = 0x27  
@@ -101,10 +102,20 @@ def countdown(t):
 t = 5
 
 
+#def displayIntro():
+ #   playsound.playsound('/root/it101-3/Audio/lobby.wav', False)
+    
+
+
+pygame.mixer.init()
+pygame.mixer.music.load("/root/it101-3/Audio/lobby.mp3")
+pygame.mixer.music.play()
+
+input("Press Enter to continue...")
 start_time = time.time()
 
 
-while True:
+while input:
     wpi.digitalRead(LDR_PIN1)
     time.sleep(0.125)
     countdown(int(t))
