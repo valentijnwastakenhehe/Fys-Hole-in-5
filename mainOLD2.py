@@ -106,12 +106,12 @@ t = 5
  #   playsound.playsound('/root/it101-3/Audio/lobby.wav', False)
     
 
-
+input("Press Enter to continue...")
 pygame.mixer.init()
 pygame.mixer.music.load("/root/it101-3/Audio/lobby.mp3")
 pygame.mixer.music.play()
 
-input("Press Enter to continue...")
+
 start_time = time.time()
 
 
