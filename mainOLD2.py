@@ -105,7 +105,7 @@ def countdown(t):
 
 def menu():
     mixer.init()
-    mixer.music.load("/root/it101-3/Audio/lobby.mp3")
+    mixer.music.load("/root/it101-3/Audio/Wii_sports.mp3")
     mixer.music.play()
 
     lcd_string(" Game mode", LCD_LINE_1)
@@ -114,7 +114,7 @@ def menu():
 menu()
 mode = int(input(" 1= makkelijk, 2 = moeilijk: "))
 if mode == 1:
-    t = 60
+    t = 10
     lcd_string("Easy mode", LCD_LINE_1)
     lcd_string("is selected", LCD_LINE_2)
     mixer.music.stop()
@@ -138,6 +138,9 @@ start_time = time.time()
 
 
 while input:
+    mixer.init()
+    mixer.music.load("/root/it101-3/Audio/mariokart.mp3")
+    mixer.music.play()
     wpi.digitalRead(LDR_PIN1)
     time.sleep(0.125)
     countdown(int(t))
@@ -163,10 +166,13 @@ while input:
         signal_old = signal_newer
         
     if elapsed_time > t:
+        mixer.music.stop()
         TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
-        playsound('/root/it101-3/Audio/winnaar.wav')
+        mixer.music.load("/root/it101-3/Audio/boxing_results.mp3")
+        mixer.music.play()
         print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
         break
+
 
 def main():
     lcd_init()
