@@ -2,7 +2,7 @@ import odroid_wiringpi as wpi
 import time
 import smbus
 from playsound import playsound 
-import pygame
+from pygame import mixer
 import os
 
 # Apparaatparameters definiëren
@@ -104,6 +104,10 @@ def countdown(t):
 
 
 def menu():
+    mixer.init()
+    mixer.music.load("/root/it101-3/Audio/lobby.mp3")
+    mixer.music.play()
+
     lcd_string(" Game mode", LCD_LINE_1)
     lcd_string("Easy or Hard", LCD_LINE_2)
 
@@ -113,10 +117,12 @@ if mode == 1:
     t = 60
     lcd_string("Easy mode", LCD_LINE_1)
     lcd_string("is selected", LCD_LINE_2)
+    mixer.music.stop()
 elif mode == 2:
     t = 30
     lcd_string("Hard mode", LCD_LINE_1)
     lcd_string("is selected", LCD_LINE_2)
+    mixer.music.stop()
 else:
     print("error")  
 
@@ -125,9 +131,7 @@ else:
  #   playsound.playsound('/root/it101-3/Audio/lobby.wav', False)
     
 
-pygame.mixer.init()
-pygame.mixer.music.load("/root/it101-3/Audio/lobby.mp3")
-pygame.mixer.music.play()
+
 
 
 start_time = time.time()
