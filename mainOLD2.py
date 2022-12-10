@@ -91,25 +91,44 @@ def lcd_string(message, line):
 
 # define the countdown func.
 def countdown(t):
-	
-	while t:
-		mins, secs = divmod(t, 60)
-		timer = '{:02d}:{:02d}'.format(mins, secs)
-		lcd_string(timer, LCD_LINE_1)
-		time.sleep(1)
-		t -= 1
+    
+    while t:
+        mins, secs = divmod(t, 60)
+        timer = '{:02d}:{:02d}'.format(mins, secs)
+        lcd_string(timer, LCD_LINE_1)
+        lcd_string(" ", LCD_LINE_2)
+        time.sleep(1)
+        t -= 1
 
-t = 5
+
+
+
+def menu():
+    playsound('/root/it101-3/Audio/lobby.mp3')
+    lcd_string(" Game mode", LCD_LINE_1)
+    lcd_string("Easy or Hard", LCD_LINE_2)
+
+menu()
+mode = int(input(" 1= makkelijk, 2 = moeilijk: "))
+if mode == 1:
+    t = 60
+    lcd_string("Easy mode", LCD_LINE_1)
+    lcd_string("is selected", LCD_LINE_2)
+elif mode == 2:
+    t = 30
+    lcd_string("Hard mode", LCD_LINE_1)
+    lcd_string("is selected", LCD_LINE_2)
+else:
+    print("error")  
 
 
 #def displayIntro():
  #   playsound.playsound('/root/it101-3/Audio/lobby.wav', False)
     
 
-input("Press Enter to continue...")
-pygame.mixer.init()
-pygame.mixer.music.load("/root/it101-3/Audio/lobby.mp3")
-pygame.mixer.music.play()
+#pygame.mixer.init()
+#pygame.mixer.music.load("/root/it101-3/Audio/lobby.mp3")
+#pygame.mixer.music.play()
 
 
 start_time = time.time()
