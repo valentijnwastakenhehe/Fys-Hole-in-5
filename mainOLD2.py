@@ -104,7 +104,6 @@ def countdown(t):
 
 
 def menu():
-    playsound('/root/it101-3/Audio/lobby.mp3')
     lcd_string(" Game mode", LCD_LINE_1)
     lcd_string("Easy or Hard", LCD_LINE_2)
 
@@ -126,9 +125,9 @@ else:
  #   playsound.playsound('/root/it101-3/Audio/lobby.wav', False)
     
 
-#pygame.mixer.init()
-#pygame.mixer.music.load("/root/it101-3/Audio/lobby.mp3")
-#pygame.mixer.music.play()
+pygame.mixer.init()
+pygame.mixer.music.load("/root/it101-3/Audio/lobby.mp3")
+pygame.mixer.music.play()
 
 
 start_time = time.time()
