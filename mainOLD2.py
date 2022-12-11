@@ -100,6 +100,18 @@ def countdown(t):
         time.sleep(1)
         t -= 1
 
+def start(x):
+    mixer.init()
+    mixer.music.load("/root/it101-3/Audio/3_2_1.mp3")
+    mixer.music.play()  
+    while x:
+ 
+        mins, secs = divmod(x, 60)
+        timer = '{:02d}:{:02d}'.format(mins, secs)
+        lcd_string(timer, LCD_LINE_1)
+        lcd_string(" ", LCD_LINE_2)
+        time.sleep(1)
+        x -= 1
 
 
 
@@ -111,14 +123,14 @@ def menu():
 
     lcd_string("    welkom", LCD_LINE_1)
     lcd_string("bij bal gooien", LCD_LINE_2)
-    time.sleep(15)
+    time.sleep(10)
     lcd_string(" Game mode", LCD_LINE_1)
     lcd_string("Easy or Hard", LCD_LINE_2)
 
 menu()
 mode = int(input(" 1= makkelijk, 2 = moeilijk: "))
 if mode == 1:
-    t = 10
+    t = 60
     lcd_string("Easy mode", LCD_LINE_1)
     lcd_string("is selected", LCD_LINE_2)
     mixer.music.stop()
@@ -134,9 +146,10 @@ else:
 #def displayIntro():
  #   playsound.playsound('/root/it101-3/Audio/lobby.wav', False)
     
+time.sleep(5)
 
-
-
+x = 3
+start(int(x))
 
 start_time = time.time()
 
