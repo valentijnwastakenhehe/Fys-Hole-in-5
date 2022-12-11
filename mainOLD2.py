@@ -104,10 +104,14 @@ def countdown(t):
 
 
 def menu():
+    lcd_init
     mixer.init()
     mixer.music.load("/root/it101-3/Audio/Wii_sports.mp3")
     mixer.music.play()
 
+    lcd_string("    welkom", LCD_LINE_1)
+    lcd_string("bij bal gooien", LCD_LINE_2)
+    time.sleep(15)
     lcd_string(" Game mode", LCD_LINE_1)
     lcd_string("Easy or Hard", LCD_LINE_2)
 
@@ -178,7 +182,7 @@ def main():
     lcd_init()
 
     while True:
-        lcd_string("GAME OVER!", LCD_LINE_1)
+        lcd_string("  GAME OVER!", LCD_LINE_1)
         lcd_string(" ", LCD_LINE_2)
 
         time.sleep(3)
