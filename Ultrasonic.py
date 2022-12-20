@@ -3,6 +3,7 @@
 import odroid_wiringpi as wpi
 import time
 
+# Werkt alleen bij Jack weet niet waarom die niet bij Quinten en Valentijn werkt.
 # Trigger pin(andere pinnen werken niet).
 # Echo pin(andere pinnen werken niet).
 # Ground moet verbazendwekkend op de ground.
@@ -14,7 +15,7 @@ LED = 7 # 7 = +; 5 = -
 
 print("Ultra sonic metingen")
 
-# Trigger werkt als een lamp. Dze triggert de Echo.
+# Trigger werkt als een lamp. Deze triggert de Echo.
 # Echo leest de waardes in en wordt daarom gebruikt als output.
 wpi.wiringPiSetup()
 wpi.pinMode(TRIG, wpi.OUTPUT)
@@ -54,8 +55,10 @@ while True:
 # Leest de tijd in wat het heeft geduurd, vanaf het starten en stoppen van de echo.
         elapsed = stop-start
 
+# elapsed keer 343 om meter te krijgen.
 # De geluidssnelheid die ongeveer 34300 cm/s is wordt keer de elapsed sec gedaan, 
 # zodat de afstand in cm wordt uitgerekend.  
+
         afstand = elapsed * 34300
 
         afstand = afstand / 2
@@ -63,7 +66,6 @@ while True:
         print("Afstand = ", afstand)
 
 # Als de afstand kleiner is dan blahblah cm is gaat het lampje aan.
-
 # Zo niet gaat die uit.
         if afstand < 32:
                wpi.digitalWrite(LED, wpi.HIGH)
