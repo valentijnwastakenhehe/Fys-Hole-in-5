@@ -150,7 +150,8 @@ time.sleep(5)
 
 x = 3
 start(int(x))
-
+lcd_string("START", LCD_LINE_2)
+time.sleep(1)
 start_time = time.time()
 
 
