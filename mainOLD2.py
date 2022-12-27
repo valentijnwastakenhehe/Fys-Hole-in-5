@@ -3,7 +3,7 @@ import time
 import smbus
 from playsound import playsound 
 from pygame import mixer
-import os
+import pygame 
 
 # Apparaatparameters definiëren
 I2C_ADDR = 0x27  
@@ -153,8 +153,7 @@ else:
     print("error")  
 
 
-#def displayIntro():
- #   playsound.playsound('/root/it101-3/Audio/lobby.wav', False)
+
     
 time.sleep(5)
 
@@ -199,30 +198,23 @@ while input:
         mixer.music.load("/root/it101-3/Audio/boxing_results.mp3")
         mixer.music.play()
         print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
-        break
+        start_tijd = time.time()
+        while True:
 
+            lcd_string("    GAME OVER!", LCD_LINE_1)
+            lcd_string(" ", LCD_LINE_2)
 
-def main():
-    lcd_init()
+            time.sleep(3)
 
-    while True:
-        lcd_string("    GAME OVER!", LCD_LINE_1)
-        lcd_string(" ", LCD_LINE_2)
+            lcd_string("Jouw score is:", LCD_LINE_1)
+            lcd_string(str(TOTAAL_SCORE), LCD_LINE_2)
+                
+            time.sleep(5)
 
-        time.sleep(3)
+            # Calculate the elapsed time
+            verlopen_tijd = time.time() - start_tijd
 
-        lcd_string("Jouw score is:", LCD_LINE_1)
-        lcd_string(str(TOTAAL_SCORE), LCD_LINE_2)
-        
-
-        time.sleep(3)
-
-
-if __name__ == '__main__':
-
-    try:
-        main()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        lcd_byte(0x01, LCD_CMD)
+            # Break out of the loop if the elapsed time exceeds 10 seconds
+            if verlopen_tijd > 5:
+                break
+    break
