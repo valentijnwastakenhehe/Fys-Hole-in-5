@@ -42,11 +42,6 @@ wpi.pinMode(LED_PIN2, wpi.OUTPUT)
 wpi.pinMode(LDR_PIN1, wpi.INPUT)
 wpi.pinMode(LDR_PIN2, wpi.INPUT)
 
-LDR_SCORE1 = 0
-LDR_SCORE2 = 0
-
-
-
 # Initialise display
 def lcd_init():
     lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
@@ -113,8 +108,6 @@ def start(x):
         time.sleep(1)
         x -= 1
 
-
-
 def menu():
     lcd_init()
     mixer.init()
@@ -137,84 +130,84 @@ def menu():
     lcd_string(" Game mode", LCD_LINE_1)
     lcd_string("Easy or Hard", LCD_LINE_2)
 
-menu()
-mode = int(input(" 1= makkelijk, 2 = moeilijk: "))
-if mode == 1:
-    t = 60
-    lcd_string("Easy mode", LCD_LINE_1)
-    lcd_string("is selected", LCD_LINE_2)
-    mixer.music.stop()
-elif mode == 2:
-    t = 30
-    lcd_string("Hard mode", LCD_LINE_1)
-    lcd_string("is selected", LCD_LINE_2)
-    mixer.music.stop()
-else:
-    print("error")  
-
-
-
-    
-time.sleep(5)
-
-x = 3
-start(int(x))
-lcd_string("    START", LCD_LINE_2)
-time.sleep(1)
-start_time = time.time()
-
-
-while input:
-    mixer.init()
-    mixer.music.load("/root/it101-3/Audio/mariokart.mp3")
-    mixer.music.play()
-    wpi.digitalRead(LDR_PIN1)
-    time.sleep(0.125)
-    countdown(int(t))
-    current_time = time.time()
-    elapsed_time = current_time - start_time
-    signal_new = wpi.digitalRead(LDR_PIN1)
-    signal_newer = wpi.digitalRead(LDR_PIN2)
-		
-    if signal_new == 1 and signal_old == 0:
-        wpi.digitalWrite(LED_PIN1, wpi.HIGH)
-        LDR_SCORE1 += 50
-    
-    else:
-        wpi.digitalWrite(LED_PIN1, wpi.LOW)
-        signal_old = signal_new
-        
-    if signal_newer == 1 and signal_old == 0:
-        wpi.digitalWrite(LED_PIN2, wpi.HIGH)
-        LDR_SCORE2 += 20
-    
-    else:
-        wpi.digitalWrite(LED_PIN2, wpi.LOW)
-        signal_old = signal_newer
-        
-    if elapsed_time > t:
+def niveau():
+    global t
+    mode = int(input(" 1= makkelijk, 2 = moeilijk: "))
+    if mode == 1:
+        t = 60
+        lcd_string("Easy mode", LCD_LINE_1)
+        lcd_string("is selected", LCD_LINE_2)
         mixer.music.stop()
-        TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
-        mixer.music.load("/root/it101-3/Audio/boxing_results.mp3")
+    elif mode == 2:
+        t = 30
+        lcd_string("Hard mode", LCD_LINE_1)
+        lcd_string("is selected", LCD_LINE_2)
+        mixer.music.stop()
+    else:
+        print("error")  
+
+def game_play():
+    LDR_SCORE1 = 0
+    LDR_SCORE2 = 0
+    while input:
+        mixer.init()
+        mixer.music.load("/root/it101-3/Audio/mariokart.mp3")
         mixer.music.play()
-        print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
-        start_tijd = time.time()
-        while True:
+        wpi.digitalRead(LDR_PIN1)
+        time.sleep(0.125)
+        countdown(int(t))
+        current_time = time.time()
+        elapsed_time = current_time - start_time
+        signal_new = wpi.digitalRead(LDR_PIN1)
+        signal_newer = wpi.digitalRead(LDR_PIN2)
+            
+        if signal_new == 1 and signal_old == 0:
+            wpi.digitalWrite(LED_PIN1, wpi.HIGH)
+            LDR_SCORE1 += 50
+        
+        else:
+            wpi.digitalWrite(LED_PIN1, wpi.LOW)
+            signal_old = signal_new
+            
+        if signal_newer == 1 and signal_old == 0:
+            wpi.digitalWrite(LED_PIN2, wpi.HIGH)
+            LDR_SCORE2 += 20
+        
+        else:
+            wpi.digitalWrite(LED_PIN2, wpi.LOW)
+            signal_old = signal_newer
+            
+        if elapsed_time > t:
+            mixer.music.stop()
+            TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
+            mixer.music.load("/root/it101-3/Audio/boxing_results.mp3")
+            mixer.music.play()
+            print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
+            start_tijd = time.time()
+            while True:
 
-            lcd_string("    GAME OVER!", LCD_LINE_1)
-            lcd_string(" ", LCD_LINE_2)
+                lcd_string("    GAME OVER!", LCD_LINE_1)
+                lcd_string(" ", LCD_LINE_2)
 
-            time.sleep(3)
+                time.sleep(3)
 
-            lcd_string("Jouw score is:", LCD_LINE_1)
-            lcd_string(str(TOTAAL_SCORE), LCD_LINE_2)
-                
-            time.sleep(5)
+                lcd_string("Jouw score is:", LCD_LINE_1)
+                lcd_string(str(TOTAAL_SCORE), LCD_LINE_2)
+                    
+                time.sleep(3)
 
-            # Calculate the elapsed time
-            verlopen_tijd = time.time() - start_tijd
+                verlopen_tijd = time.time() - start_tijd
 
-            # Break out of the loop if the elapsed time exceeds 10 seconds
-            if verlopen_tijd > 5:
-                break
-    break
+                if verlopen_tijd > 20:
+                    break
+        break
+
+while True:
+    menu()
+    niveau()
+    time.sleep(5)
+    x=3
+    lcd_string("    START", LCD_LINE_2)
+    time.sleep(1)
+    start_time = time.time()
+    game_play()
