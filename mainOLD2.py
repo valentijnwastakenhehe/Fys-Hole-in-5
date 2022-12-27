@@ -108,7 +108,7 @@ def start(x):
  
         mins, secs = divmod(x, 60)
         timer = '{:02d}:{:02d}'.format(mins, secs)
-        lcd_string(     timer, LCD_LINE_1)
+        lcd_string(timer, LCD_LINE_1)
         lcd_string(" ", LCD_LINE_2)
         time.sleep(1)
         x -= 1
