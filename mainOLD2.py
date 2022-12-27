@@ -108,7 +108,7 @@ def start(x):
  
         mins, secs = divmod(x, 60)
         timer = '{:02d}:{:02d}'.format(mins, secs)
-        lcd_string(timer, LCD_LINE_1)
+        lcd_string(     timer, LCD_LINE_1)
         lcd_string(" ", LCD_LINE_2)
         time.sleep(1)
         x -= 1
@@ -116,13 +116,23 @@ def start(x):
 
 
 def menu():
-    lcd_init
+    lcd_init()
     mixer.init()
     mixer.music.load("/root/it101-3/Audio/Wii_sports.mp3")
     mixer.music.play()
+    text = "    welkom"
 
-    lcd_string("    welkom", LCD_LINE_1)
-    lcd_string("bij bal gooien", LCD_LINE_2)
+    # Display the text one character at a time
+    for i, c in enumerate(text):
+        lcd_string(text[:i+1], LCD_LINE_1)
+        time.sleep(0.2)
+
+    time.sleep(0.5)
+
+    text2 = "bij balgooien"
+    for i, c in enumerate(text2):
+        lcd_string(text2[:i+1], LCD_LINE_2)
+        time.sleep(0.2)    
     time.sleep(10)
     lcd_string(" Game mode", LCD_LINE_1)
     lcd_string("Easy or Hard", LCD_LINE_2)
@@ -150,7 +160,7 @@ time.sleep(5)
 
 x = 3
 start(int(x))
-lcd_string("START", LCD_LINE_2)
+lcd_string("    START", LCD_LINE_2)
 time.sleep(1)
 start_time = time.time()
 
@@ -196,7 +206,7 @@ def main():
     lcd_init()
 
     while True:
-        lcd_string("  GAME OVER!", LCD_LINE_1)
+        lcd_string("    GAME OVER!", LCD_LINE_1)
         lcd_string(" ", LCD_LINE_2)
 
         time.sleep(3)
