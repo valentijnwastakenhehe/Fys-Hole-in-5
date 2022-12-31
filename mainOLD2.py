@@ -188,27 +188,30 @@ def game_play():
             
         if elapsed_time > t:
             mixer.music.stop()
+            
             TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
             audio_files = []
+            audio_files.append("/root/it101-3/Audio/game_over.mp3")
             if TOTAAL_SCORE > high_score:
-                high_score = TOTAAL_SCORE
-                audio_files.append("/root/it101-3/Audio/high_score.mp3")
+                audio_files.append("/root/it101-3/Audio/high_score.wav")
             if TOTAAL_SCORE > 500:
-                audio_files.append("/root/it101-3/Audio/you_cheated.mp3")
+                audio_files.append("/root/it101-3/Audio/you_cheated.wav")
             if TOTAAL_SCORE < 100:
                 audio_files.append("/root/it101-3/Audio/you_suck.wav")
-            time.sleep(2)
             audio_files.append("/root/it101-3/Audio/boxing2.mp3")
-            thread = threading.Thread(target=play_audio_files, args=(audio_files,))
-            thread.start()
+            threads = []
+            p = threading.Thread(target=play_audio_files, args=(audio_files,))
+            threads.append(p)
+            
+            for p in threads:
+                p.start()
+            time.sleep(2)
+
+
+
             print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
             start_tijd = time.time()
             while True:
-
-                lcd_string("    GAME OVER!", LCD_LINE_1)
-                lcd_string(" ", LCD_LINE_2)
-
-                time.sleep(1)
 
                 lcd_string("Jouw score is:", LCD_LINE_1)
                 lcd_string(str(TOTAAL_SCORE), LCD_LINE_2)
