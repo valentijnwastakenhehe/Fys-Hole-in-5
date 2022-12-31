@@ -4,6 +4,7 @@ import smbus
 from playsound import playsound 
 from pygame import mixer
 import pygame 
+import threading
 
 # Apparaatparameters definiëren
 I2C_ADDR = 0x27  
@@ -84,6 +85,13 @@ def lcd_string(message, line):
     for i in range(LCD_WIDTH):
         lcd_byte(ord(message[i]), LCD_CHR)
 
+def play_audio_files(audio_files):
+    for audio_file in audio_files:
+        mixer.music.load(audio_file)
+        mixer.music.play()
+        while mixer.music.get_busy():
+            time.sleep(0.1)
+
 # define the countdown func.
 def countdown(t):
     
@@ -139,7 +147,7 @@ def niveau():
         lcd_string("is selected", LCD_LINE_2)
         mixer.music.stop()
     elif mode == 2:
-        t = 30
+        t = 5
         lcd_string("Hard mode", LCD_LINE_1)
         lcd_string("is selected", LCD_LINE_2)
         mixer.music.stop()
@@ -149,6 +157,7 @@ def niveau():
 def game_play():
     LDR_SCORE1 = 0
     LDR_SCORE2 = 0
+    high_score = 0
     while input:
         mixer.init()
         mixer.music.load("/root/it101-3/Audio/mariokart.mp3")
@@ -180,8 +189,18 @@ def game_play():
         if elapsed_time > t:
             mixer.music.stop()
             TOTAAL_SCORE = LDR_SCORE1 + LDR_SCORE2
-            mixer.music.load("/root/it101-3/Audio/boxing_results.mp3")
-            mixer.music.play()
+            audio_files = []
+            if TOTAAL_SCORE > high_score:
+                high_score = TOTAAL_SCORE
+                audio_files.append("/root/it101-3/Audio/high_score.mp3")
+            if TOTAAL_SCORE > 500:
+                audio_files.append("/root/it101-3/Audio/you_cheated.mp3")
+            if TOTAAL_SCORE < 100:
+                audio_files.append("/root/it101-3/Audio/you_suck.wav")
+            time.sleep(2)
+            audio_files.append("/root/it101-3/Audio/boxing2.mp3")
+            thread = threading.Thread(target=play_audio_files, args=(audio_files,))
+            thread.start()
             print("\nGame over! \n\nJouw score is:" , TOTAAL_SCORE)
             start_tijd = time.time()
             while True:
@@ -189,7 +208,7 @@ def game_play():
                 lcd_string("    GAME OVER!", LCD_LINE_1)
                 lcd_string(" ", LCD_LINE_2)
 
-                time.sleep(3)
+                time.sleep(1)
 
                 lcd_string("Jouw score is:", LCD_LINE_1)
                 lcd_string(str(TOTAAL_SCORE), LCD_LINE_2)
@@ -198,7 +217,7 @@ def game_play():
 
                 verlopen_tijd = time.time() - start_tijd
 
-                if verlopen_tijd > 20:
+                if verlopen_tijd > 15:
                     break
         break
 
@@ -207,6 +226,7 @@ while True:
     niveau()
     time.sleep(5)
     x=3
+    start(x)
     lcd_string("    START", LCD_LINE_2)
     time.sleep(1)
     start_time = time.time()
