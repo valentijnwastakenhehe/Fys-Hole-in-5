@@ -5,6 +5,14 @@ from playsound import playsound
 from pygame import mixer
 import pygame 
 import threading
+import pickle
+
+try:
+    with open("high_score.dat", "rb") as f:
+        high_score = pickle.load(f)
+except:
+    high_score = 0
+
 
 # Apparaatparameters definiëren
 I2C_ADDR = 0x27  
@@ -85,6 +93,20 @@ def lcd_string(message, line):
     for i in range(LCD_WIDTH):
         lcd_byte(ord(message[i]), LCD_CHR)
 
+def handle_high_score():
+    global high_score
+    
+    # Check if the file exists
+    if os.path.exists("highscore.txt"):
+        # Open the file to read the high score
+        f = open("highscore.txt", "r")
+
+        # Read the high score from the file
+        high_score = int(f.read())
+
+        # Close the file
+        f.close()
+
 def play_audio_files(audio_files):
     for audio_file in audio_files:
         mixer.music.load(audio_file)
@@ -156,8 +178,12 @@ def niveau():
 
 def game_play():
     LDR_SCORE1 = 0
-    LDR_SCORE2 = 0
-    high_score = 0
+    LDR_SCORE2 = 15
+    try:
+        with open("high_score.dat", "rb") as f:
+            high_score = pickle.load(f)
+    except:
+        high_score = 0
     while input:
         mixer.init()
         mixer.music.load("/root/it101-3/Audio/mariokart.mp3")
@@ -194,6 +220,9 @@ def game_play():
             audio_files.append("/root/it101-3/Audio/game_over.mp3")
             if TOTAAL_SCORE > high_score:
                 audio_files.append("/root/it101-3/Audio/high_score.wav")
+                high_score = TOTAAL_SCORE
+                with open("high_score.dat", "wb") as f:
+                    pickle.dump(high_score, f)
             if TOTAAL_SCORE > 500:
                 audio_files.append("/root/it101-3/Audio/you_cheated.wav")
             if TOTAAL_SCORE < 100:
@@ -218,11 +247,17 @@ def game_play():
                     
                 time.sleep(3)
 
+                lcd_string("high score is:", LCD_LINE_1)
+                lcd_string(str(high_score), LCD_LINE_2)
+
+                time.sleep(3)
+
                 verlopen_tijd = time.time() - start_tijd
 
                 if verlopen_tijd > 15:
                     break
         break
+
 
 while True:
     menu()
