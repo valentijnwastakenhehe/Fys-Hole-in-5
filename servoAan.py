@@ -13,7 +13,9 @@ SERVO_PIN = 1
 wpi.wiringPiSetup()
 
 #wpi 0, 2 en 3 zijn input
-wpi.pinMode(EASY_BUTTON_PIN, MEDIUM_BUTTON_PIN, HARD_BUTTON_PIN, wpi.INPUT)
+wpi.pinMode(EASY_BUTTON_PIN, wpi.INPUT)
+wpi.pinMode(MEDIUM_BUTTON_PIN, wpi.INPUT)
+wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT)
 
 #pin 1 is output
 wpi.pinMode(SERVO_PIN, wpi.PWM_OUTPUT)
