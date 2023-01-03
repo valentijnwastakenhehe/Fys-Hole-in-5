@@ -16,7 +16,8 @@ while True:
 #what is the state of the button	
      start_button = wpi.digitalRead(START_BUTTON_PIN) 
 
-     if start_button == wpi.HIGH:
+     print("Push button!") 
+     if start_button == wpi.LOW:
          #for loop in python (kuttaal) die van -500 naar 500 gaat met stappen van +2; 180 graden naar links
          servoSpin = 0
          for servoSpin in range(500, 2): 
@@ -29,8 +30,6 @@ while True:
             time.sleep(0.03)
             print(servoSpin)
 
-     else:
-         print("Push button!")
 
 #wait 200ms
      time.sleep(0.2)
