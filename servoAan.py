@@ -33,6 +33,15 @@ def hard_mode():
           time.sleep(0.03)
           print(servoSpin)
 
+easy_mode()
+time.sleep(3)
+
+medium_mode()
+time.sleep(3)
+
+hard_mode()
+time.sleep(3)
+
 print ("I work!")
 
 
