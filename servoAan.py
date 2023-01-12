@@ -28,10 +28,19 @@ def medium_mode():
 def hard_mode():
      #for loop die van 110 naar 500 gaat; 180 graden
      servoSpin = 110
-     for servoSpin in range (110, 500, 2);
+     for servoSpin in range (110, 500, 2):
      wpi.pwmWrite(SERVO_PIN, servoSpin)
      time.sleep(0.03)
      print(servoSpin)
+
+easy_mode()
+time.sleep(3)
+
+medium_mode()
+time.sleep(3)
+
+hard_mode()
+time.sleep(3)
 
 print ("I work!")
 
