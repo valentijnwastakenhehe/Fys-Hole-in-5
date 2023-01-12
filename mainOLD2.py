@@ -304,6 +304,7 @@ def game_play():
 
 
 while True:
+    get_run_count()
     menu()
     niveau()
     time.sleep(5)

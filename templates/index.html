@@ -1,34 +1,22 @@
+<!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>LDR Data</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/5.3.2/socket.io.js"></script>
-    <script>
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-        socket.on('connect', function() {
-            console.log('Connected to the server.');
-        });
-    </script>
-</head>
-<body>
-    <table class="table table-hover table-bordered">
-        <thead>
-            <tr>
-                <th>Timestamp</th>
-                <th>LDR 1</th>
-                <th>LDR 2</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in data %}
-                <tr>
-                    <td>{{ row[0].strftime('%Y-%m-%d %H:%M:%S') }}</td>
-                    <td>{{ row[1] }}</td>
-                    <td>{{ row[2] }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+  </head>
+  <body>
+    <h1>High Scores</h1>
+    <table>
+      <tr>
+        <th>LDR Number</th>
+        <th>Score</th>
+      </tr>
+      {% for score in high_scores %}
+        <tr>
+          <td>{{ score[0] }}</td>
+          <td>{{ score[1] }}</td>
+        </tr>
+      {% endfor %}
     </table>
-    <div id="reading-count">Total Readings: {{ data|length }}</div>
-</body>
+    <h2>Run Count: {{ run_count }}</h2>
+  </body>
 </html>
