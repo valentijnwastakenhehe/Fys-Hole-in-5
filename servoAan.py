@@ -26,6 +26,7 @@ def easy_mode():
                time.sleep(0.03)
                print(servoSpin)
      time.sleep(0.2)
+     print ("Easy mode")
 
 def medium_mode():
      #If button is pressed once print medium.
@@ -38,6 +39,7 @@ def medium_mode():
                time.sleep(0.03)
                print(servoSpin)
      time.sleep(0.2)     
+     print ("medium mode")
 
 def hard_mode():
      #If button is pressed once print hard.
@@ -50,6 +52,7 @@ def hard_mode():
                time.sleep(0.03)
                print(servoSpin)
      time.sleep(0.2)
+     print ("hard mode")
      
 easy_mode()
 time.sleep(3)
