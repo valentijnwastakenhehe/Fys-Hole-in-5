@@ -36,10 +36,10 @@ while True:
           print("Medium mode")
      
      #Check button state and move servo to hard mode
-     button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
-     if button_state_hard == wpi.LOW:
-          move_servo(305, 110, -2)
-          print("Hard mode")
+#     button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
+#     if button_state_hard == wpi.LOW:
+#          move_servo(305, 110, -2)
+#          print("Hard mode")
 
 
 
