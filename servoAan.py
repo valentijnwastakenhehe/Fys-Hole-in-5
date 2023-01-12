@@ -25,8 +25,8 @@ if button_state_easy == wpi.LOW:
           wpi.pwmWrite(SERVO_PIN, servoSpin)
           time.sleep(0.03)
           print(servoSpin)
-time.sleep(0.2)
-print ("Easy mode")
+     time.sleep(0.2)
+     print ("Easy mode")
 
 
      #If button is pressed once print medium.
@@ -38,8 +38,8 @@ if button_state_medium == wpi.LOW:
           wpi.pwmWrite(SERVO_PIN, servoSpin)
           time.sleep(0.03)
           print(servoSpin)
-time.sleep(0.2)     
-print ("medium mode")
+     time.sleep(0.2)     
+     print ("medium mode")
 
 
      #If button is pressed once print hard.
@@ -51,8 +51,8 @@ if button_state_hard == wpi.LOW:
           wpi.pwmWrite(SERVO_PIN, servoSpin)
           time.sleep(0.03)
           print(servoSpin)
-time.sleep(0.2)
-print ("hard mode")
+     time.sleep(0.2)
+     print ("hard mode")
      
 
 
