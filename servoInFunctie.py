@@ -4,7 +4,7 @@ import time
 SERVO_PIN = 1
 EASY_BUTTON_PIN = 8 #gpio 3 & 6(gnd)
 MEDIUM_BUTTON_PIN = 9 #gpio 5 & 6(gnd)
-HARD_BUTTON_PIN = 12 #gpio 19 & 6(gnd)
+HARD_BUTTON_PIN = 30 #gpio 27 & 6(gnd)
 
 #pinnen instellen
 wpi.wiringPiSetup()
@@ -36,10 +36,10 @@ while True:
           print("Medium mode")
      
      #Check button state and move servo to hard mode
-#     button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
-#     if button_state_hard == wpi.LOW:
-#          move_servo(305, 110, -2)
-#          print("Hard mode")
+     button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
+     if button_state_hard == wpi.LOW:
+          move_servo(305, 110, -2)
+          print("Hard mode")
 
 
 
