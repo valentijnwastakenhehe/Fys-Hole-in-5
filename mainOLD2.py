@@ -6,7 +6,7 @@
 # Author: Sander Hoozemans, Senna Beerens 
 # -----------------------------------------------------------
 
-
+import sqlite3
 import odroid_wiringpi as wpi 
 import time
 import smbus
@@ -15,6 +15,22 @@ from pygame import mixer
 import pygame 
 import threading
 import pickle
+from flask import Flask, render_template
+from flask_socketio import SocketIO, emit
+
+app = Flask(__name__)
+socketio = SocketIO(app)
+conn = sqlite3.connect('mainOLD2_data.db')
+cursor = conn.cursor()
+
+# Create the database tables if they don't exist
+cursor.execute('''CREATE TABLE IF NOT EXISTS ldr_data (timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP, ldr1 INTEGER, ldr2 INTEGER)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS high_scores (ldr_num INTEGER, high_score INTEGER)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS runs (run_num INTEGER)''')
+
+# Initialize the run count
+cursor.execute("INSERT INTO runs (run_num) VALUES (0)")
+
 
 try:
     with open("high_score.dat", "rb") as f:
@@ -101,6 +117,25 @@ def lcd_string(message, line):
 
     for i in range(LCD_WIDTH):
         lcd_byte(ord(message[i]), LCD_CHR)
+
+def update_high_scores(ldr1_score, ldr2_score):
+    cursor.execute("UPDATE high_scores SET high_score = ? WHERE ldr_num = 1", (ldr1_score,))
+    cursor.execute("UPDATE high_scores SET high_score = ? WHERE ldr_num = 2", (ldr2_score,))
+    conn.commit
+
+def update_run_count():
+    cursor.execute("UPDATE runs SET run_num = run_num + 1 WHERE run_num = (SELECT MAX(run_num) FROM runs)")
+    conn.commit()
+
+def get_run_count():
+    cursor.execute("SELECT run_num FROM runs WHERE run_num = (SELECT MAX(run_num) FROM runs)")
+    run_count = cursor.fetchone()[0]
+    return run_count
+
+def get_high_scores():
+    cursor.execute("SELECT ldr_num, high_score FROM high_scores")
+    high_scores = cursor.fetchall()
+    return high_scores
 
 def handle_high_score():
     global high_score
