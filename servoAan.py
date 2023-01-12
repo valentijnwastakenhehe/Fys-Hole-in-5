@@ -15,7 +15,7 @@ wpi.pinMode(MEDIUM_BUTTON_PIN, wpi.INPUT) #set medium to pin 9
 wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT) #set hard to pin 12
 
 
-While True:
+while True:
      #If button is pressed once select mode easy
      button_state_easy = wpi.digitalRead(EASY_BUTTON_PIN)
      if button_state_easy == wpi.LOW:
@@ -23,7 +23,7 @@ While True:
           servoSpin = 110
           for servoSpin in range(110, 500, 2):
                wpi.pwmWrite(SERVO_PIN, servoSpin)
-               time.sleep(0.03)
+               time.sleep(0.1)
                print(servoSpin)
           time.sleep(0.2)
           print ("Easy mode")
@@ -36,7 +36,7 @@ While True:
           servoSpin = 110
           for servoSpin in range (110, 305, 2):
                wpi.pwmWrite(SERVO_PIN, servoSpin)
-               time.sleep(0.03)
+               time.sleep(0.1)
                print(servoSpin)
           time.sleep(0.2)     
           print ("medium mode")
@@ -49,7 +49,7 @@ While True:
           servoSpin = 500
           for servoSpin in range (500, 110, -2):
                wpi.pwmWrite(SERVO_PIN, servoSpin)
-               time.sleep(0.03)
+               time.sleep(0.1)
                print(servoSpin)
           time.sleep(0.2)
           print ("hard mode")
