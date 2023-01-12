@@ -1,18 +1,28 @@
 from flask import Flask, render_template
+import mysql.connector
 
-app = Flask(__name__, template_folder='templates', static_folder='static')
+app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # Connect to the database
+    conn = mysql.connector.connect(
+        host="oege.ie.hva.nl",
+        user="bruggev",
+        password="#bnbpLjKr6L8mx",
+        database="zbruggev"
+    )
+    c = conn.cursor()
 
-@app.route('/status.html')
-def status():
-    return render_template('status.html')
+    # Execute a SELECT statement to retrieve the data
+    c.execute('SELECT * FROM mytable')
+    data = c.fetchall()
 
-@app.route('/data.html')
-def data():
-    return render_template('data.html')
+    # Close the connection
+    conn.close()
+
+    # Render the template and pass in the data
+    return render_template('index.html', data=data)
 
 if __name__ == '__main__':
-    app.run(host = "0.0.0.0", port=5000)
+    app.run(host='0.0.0.0', port=80)
