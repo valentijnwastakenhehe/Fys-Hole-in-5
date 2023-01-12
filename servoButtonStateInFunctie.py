@@ -33,43 +33,34 @@ def hard_mode():
           button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
           if button_state_hard == wpi.LOW:
 
+#for loop die van 500 naar 110 gaat met stappen van -2; 180 graden naar links
+servoSpin = 110
+for servoSpin in range(110, 500, 2):
+     wpi.pwmWrite(SERVO_PIN, servoSpin)
+     time.sleep(0.08)
+     print(servoSpin)
+time.sleep(0.2)
+print ("Easy mode")
+
+
+#for loop die van 500 naar 305 gaat; 90 graden
+servoSpin = 110
+for servoSpin in range (110, 305, 2):
+     wpi.pwmWrite(SERVO_PIN, servoSpin)
+     time.sleep(0.08)
+     print(servoSpin)
+time.sleep(0.2)     
+print ("medium mode")
 
 
 
-
-          #for loop die van 500 naar 110 gaat met stappen van -2; 180 graden naar links
-          servoSpin = 110
-          for servoSpin in range(110, 500, 2):
-               wpi.pwmWrite(SERVO_PIN, servoSpin)
-               time.sleep(0.08)
-               print(servoSpin)
-          time.sleep(0.2)
-          print ("Easy mode")
-
-
-          #for loop die van 500 naar 305 gaat; 90 graden
-          servoSpin = 110
-          for servoSpin in range (110, 305, 2):
-               wpi.pwmWrite(SERVO_PIN, servoSpin)
-               time.sleep(0.08)
-               print(servoSpin)
-          time.sleep(0.2)     
-          print ("medium mode")
-
-
-
-          #for loop die van 110 naar 500 gaat; 180 graden
-          servoSpin = 500
-          for servoSpin in range (500, 110, -2):
-               wpi.pwmWrite(SERVO_PIN, servoSpin)
-               time.sleep(0.08)
-               print(servoSpin)
-          time.sleep(0.2)
-          print ("hard mode")
-     
-
-
-print ("I work!")
-
+#for loop die van 110 naar 500 gaat; 180 graden
+servoSpin = 500
+for servoSpin in range (500, 110, -2):
+     wpi.pwmWrite(SERVO_PIN, servoSpin)
+     time.sleep(0.08)
+     print(servoSpin)
+time.sleep(0.2)
+print ("hard mode")
 
 
