@@ -178,7 +178,7 @@ def niveau():
 
 def game_play():
     LDR_SCORE1 = 0
-    LDR_SCORE2 = 15
+    LDR_SCORE2 = 1000
     try:
         with open("high_score.dat", "rb") as f:
             high_score = pickle.load(f)
