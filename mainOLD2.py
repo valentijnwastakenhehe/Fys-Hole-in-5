@@ -1,3 +1,12 @@
+# -----------------------------------------------------------
+# Main python bestand dat ons project laat werken.
+# 
+#
+# (C) 2023
+# Author: Sander Hoozemans, Senna Beerens 
+# -----------------------------------------------------------
+
+
 import odroid_wiringpi as wpi 
 import time
 import smbus
