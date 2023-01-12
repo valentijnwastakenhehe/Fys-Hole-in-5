@@ -6,6 +6,7 @@
 # Author: Sander Hoozemans, Senna Beerens 
 # -----------------------------------------------------------
 
+# Onze imports om het project te laten werken
 import odroid_wiringpi as wpi 
 import time
 import smbus
@@ -15,6 +16,7 @@ import pygame
 import threading
 import pickle
 
+# Kijken of het .dat bestand bestaat als het niet zo is high_score = 0 om errors te voorkomen
 try:
     with open("high_score.dat", "rb") as f:
         high_score = pickle.load(f)
@@ -25,53 +27,56 @@ except:
 # Apparaatparameters definiëren
 I2C_ADDR = 0x27  
 LCD_WIDTH = 16  # Maximum aantal tekens per regel
+LCD_CHR = 1  # Mode - Data sturen 
+LCD_CMD = 0  # Mode - Commandos sturen 
 
-# Define device constants
-LCD_CHR = 1  # Mode - Sending data
-LCD_CMD = 0  # Mode - Sending command
+LCD_LINE_1 = 0x80  # LCD RAM adres voor de 1ste lijn
+LCD_LINE_2 = 0xC0  # LCD RAM adres voor de 2de lijn
+LCD_LINE_3 = 0x94  # LCD RAM adres voor de 3de lijn
+LCD_LINE_4 = 0xD4  # LCD RAM adres voor de 4de lijn
 
-LCD_LINE_1 = 0x80  # LCD RAM address for the 1st line
-LCD_LINE_2 = 0xC0  # LCD RAM address for the 2nd line
-LCD_LINE_3 = 0x94  # LCD RAM address for the 3rd line
-LCD_LINE_4 = 0xD4  # LCD RAM address for the 4th line
-
-LCD_BACKLIGHT = 0x08  # On
+LCD_BACKLIGHT = 0x08  # LCD aan
 ENABLE = 0b00000100  # Enable bit
 
-# Timing constants
+# Timing constanten
 E_PULSE = 0.0005
 E_DELAY = 0.0005
 
-# Open I2C interface
-bus = smbus.SMBus(0)  # Open I2C interface for ODROID-C2
+# I2C interface openen
+bus = smbus.SMBus(0)  
 
-#Hier zijn de GDIO pinnenen hoe de ledjes en LDRs moeten worden aangesloten. 
-LED_PIN1 = 7 	#GPIO PIN 7 = + ;9 = -
-LED_PIN2 = 30 	#GPIO PIN 27 = +; 30 = +
-LDR_PIN1 = 15 	#GPIO PIN m = 1; - = 6; S = 8
-LDR_PIN2 = 16 	#GPIO PIN m = 17; - = 20; S = 10
+# GPIO pins hoe de ledjes en LDRs moeten worden aangesloten. 
+LED_PIN1 =  	#GPIO PIN + = '' ; - = '' ;
+LED_PIN2 =  	#GPIO PIN + = '' ; - = '' ;
+LDR_PIN1 =  	#GPIO PIN + = '' ; - = '' ; S = '' ;
+LDR_PIN2 =  	#GPIO PIN + = '' ; - = '' ; S = '' ;
+LDR_PIN3 =  	#GPIO PIN + = '' ; - = '' ; S = '' ;
+LDR_PIN4 =  	#GPIO PIN + = '' ; - = '' ; S = '' ;
+LDR_PIN5 =  	#GPIO PIN + = '' ; - = '' ; S = '' ;
 
 # LDR leest iets af daarom is het input. Lampjes worden aangestuurd. Lasers blijven oneindig aan.
-
 wpi.wiringPiSetup()
 wpi.pinMode(LED_PIN1, wpi.OUTPUT)
 wpi.pinMode(LED_PIN2, wpi.OUTPUT)
 wpi.pinMode(LDR_PIN1, wpi.INPUT)
 wpi.pinMode(LDR_PIN2, wpi.INPUT)
+wpi.pinMode(LDR_PIN3, wpi.INPUT)
+wpi.pinMode(LDR_PIN4, wpi.INPUT)
+wpi.pinMode(LDR_PIN5, wpi.INPUT)
 
-# Initialise display
+# Display initialiseren
 def lcd_init():
-    lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
-    lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
-    lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
-    lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
-    lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
-    lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
+    lcd_byte(0x33, LCD_CMD)  # 110011 initialiseren
+    lcd_byte(0x32, LCD_CMD)  # 110010 initialiseren
+    lcd_byte(0x06, LCD_CMD)  # 000110 Cursor beweegt richting
+    lcd_byte(0x0C, LCD_CMD)  # 001100 Weergave aan, cursor uit, knipperen uit
+    lcd_byte(0x28, LCD_CMD)  # 101000 Gegevens lengte, aantal regels, lettergrootte
+    lcd_byte(0x01, LCD_CMD)  # 000001 Display Legen 
     time.sleep(E_DELAY)
 
 
-# Send byte to data pins
-# (#bits = the data, #mode = 1 for data or 0 for command)
+# Stuur byte naar datapinnen
+# (bits = de data, #mode = 1 voor data of 0 voor commando)
 def lcd_byte(bits, mode):
     bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
     bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
@@ -92,7 +97,7 @@ def lcd_toggle_enable(bits):
     time.sleep(E_DELAY)
 
 
-# Send string to display
+# String naar het display sturen
 def lcd_string(message, line):
     message = message.ljust(LCD_WIDTH, " ")
 
@@ -101,20 +106,24 @@ def lcd_string(message, line):
     for i in range(LCD_WIDTH):
         lcd_byte(ord(message[i]), LCD_CHR)
 
+
+# Highscore systeem 
 def handle_high_score():
     global high_score
     
-    # Check if the file exists
+    # Controleer of het bestand bestaat
     if os.path.exists("highscore.txt"):
-        # Open the file to read the high score
+        # Open het bestand om de hoogste score te lezen
         f = open("highscore.txt", "r")
 
-        # Read the high score from the file
+        # Lees de hoogste score uit het bestand
         high_score = int(f.read())
 
-        # Close the file
+        # Sluit het bestand
         f.close()
 
+
+# Audio systeem 
 def play_audio_files(audio_files):
     for audio_file in audio_files:
         mixer.music.load(audio_file)
@@ -122,7 +131,8 @@ def play_audio_files(audio_files):
         while mixer.music.get_busy():
             time.sleep(0.1)
 
-# define the countdown func.
+
+# Countdown systeem
 def countdown(t):
     
     while t:
@@ -133,6 +143,8 @@ def countdown(t):
         time.sleep(1)
         t -= 1
 
+
+# Start audio
 def start(x):
     mixer.init()
     mixer.music.load("/root/it101-3/Audio/3_2_1.mp3")
@@ -146,6 +158,8 @@ def start(x):
         time.sleep(1)
         x -= 1
 
+
+# Menu audio
 def menu():
     lcd_init()
     mixer.init()
@@ -153,7 +167,7 @@ def menu():
     mixer.music.play()
     text = "    welkom"
 
-    # Display the text one character at a time
+    # Geef de tekst teken voor teken weer
     for i, c in enumerate(text):
         lcd_string(text[:i+1], LCD_LINE_1)
         time.sleep(0.2)
@@ -168,6 +182,8 @@ def menu():
     lcd_string(" Game mode", LCD_LINE_1)
     lcd_string("Easy or Hard", LCD_LINE_2)
 
+
+# Moeilijks graad systeem 
 def niveau():
     global t
     mode = int(input(" 1= makkelijk, 2 = moeilijk: "))
@@ -184,6 +200,8 @@ def niveau():
     else:
         print("error")  
 
+
+# Main code
 def game_play():
     LDR_SCORE1 = 0
     LDR_SCORE2 = 15
