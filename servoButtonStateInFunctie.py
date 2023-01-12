@@ -18,7 +18,7 @@ wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT) #set hard to pin 12
 def move_servo(start, end, step):
     for servoSpin in range(start, end, step):
         wpi.pwmWrite(SERVO_PIN, servoSpin)
-        time.sleep(0.1)
+        time.sleep(0.07)
         print(servoSpin)
     time.sleep(0.2)
 
@@ -30,16 +30,6 @@ while True:
           move_servo(110, 500, 2)
           print("Easy mode")
 
-
-
-     #for loop die van 500 naar 110 gaat met stappen van -2; 180 graden naar links
-     servoSpin = 110
-     for servoSpin in range(110, 500, 2):
-          wpi.pwmWrite(SERVO_PIN, servoSpin)
-          time.sleep(0.08)
-          print(servoSpin)
-     time.sleep(0.2)
-     print ("Easy mode")
 
 
 
