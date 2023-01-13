@@ -22,8 +22,8 @@ while True:
         time.sleep(0.00001)
         wpi.digitalWrite(TRIG, wpi.LOW)
         start = time.time()
-	
-	print("Start: ", start)
+
+        print("Start: ", start)
 	
         print("Debug")
 
@@ -36,7 +36,8 @@ while True:
         elapsed = stop-start
 
 	print("Stop: ", stop)
-	print("Elapsed: ", elapsed)
+	
+        print("Elapsed: ", elapsed)
 
         afstand = elapsed * 34300
 
