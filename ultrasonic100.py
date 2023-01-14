@@ -34,3 +34,5 @@ while True:
 
     # Calculate the distance in cm
     distance = (stop - start) * 17150
+    
+    print("Afstand: ", distance)

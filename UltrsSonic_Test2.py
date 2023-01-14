@@ -1,7 +1,7 @@
 import odroid_wiringpi as wpi
 import time
 
-TRIG = 27 #van 23 naar 27 oftewel 33 naar 36 fysiek
+TRIG = 23 #van 23 naar 27 oftewel 33 naar 36 fysiek
 ECHO = 24
 LED = 7
 
