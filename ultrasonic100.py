@@ -25,12 +25,18 @@ while True:
     # Record the start time
     start = time.time()
 
+    #print start time
+    print("Start: ", start)
+
     # Wait for the ECHO pin to go low
     while wpi.digitalRead(ECHO) == 1:
         pass
 
     # Record the stop time
     stop = time.time()
+
+    #print stop time
+    print("Stop: ", stop)
 
     # Calculate the distance in cm
     distance = (stop - start) * 17150
