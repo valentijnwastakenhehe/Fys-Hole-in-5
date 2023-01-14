@@ -1,7 +1,7 @@
 import odroid_wiringpi as wpi
 import time
 
-TRIG = 23
+TRIG = 27 #van 23 naar 27 oftewel 33 naar 36 fysiek
 ECHO = 24
 LED = 7
 
@@ -23,6 +23,8 @@ while True:
         wpi.digitalWrite(TRIG, wpi.LOW)
         start = time.time()
 
+        print("Start: ", start)
+
         print("Debug")
 
         while wpi.digitalRead(ECHO) == 0:
@@ -32,6 +34,9 @@ while True:
            stop = time.time()
 
         elapsed = stop-start
+
+        print("Stop: ", stop)
+        print("Elapsed: ", elapsed)
 
         afstand = elapsed * 34300
 
