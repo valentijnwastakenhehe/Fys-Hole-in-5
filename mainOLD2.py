@@ -20,17 +20,15 @@ from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 socketio = SocketIO(app)
-conn = sqlite3.connect('mainOLD2_data.db')
+conn = sqlite3.connect("sensor_data.db")
 cursor = conn.cursor()
+timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
 
-# Create the database tables if they don't exist
-cursor.execute('''CREATE TABLE IF NOT EXISTS ldr_data (timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP, ldr1 INTEGER, ldr2 INTEGER)''')
-cursor.execute('''CREATE TABLE IF NOT EXISTS high_scores (ldr_num INTEGER, high_score INTEGER)''')
-cursor.execute('''CREATE TABLE IF NOT EXISTS runs (run_num INTEGER)''')
 
-# Initialize the run count
-cursor.execute("INSERT INTO runs (run_num) VALUES (0)")
+cursor.execute('''CREATE TABLE IF NOT EXISTS sensor_data (id INTEGER PRIMARY KEY, LDR_PIN1 INTEGER, LDR_PIN2 INTEGER, timestamp DATETIME)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS high_scores (id INTEGER PRIMARY KEY, score INTEGER, timestamp DATETIME)''')
 
+conn.commit()
 
 try:
     with open("high_score.dat", "rb") as f:
@@ -118,24 +116,6 @@ def lcd_string(message, line):
     for i in range(LCD_WIDTH):
         lcd_byte(ord(message[i]), LCD_CHR)
 
-def update_high_scores(ldr1_score, ldr2_score):
-    cursor.execute("UPDATE high_scores SET high_score = ? WHERE ldr_num = 1", (ldr1_score,))
-    cursor.execute("UPDATE high_scores SET high_score = ? WHERE ldr_num = 2", (ldr2_score,))
-    conn.commit
-
-def update_run_count():
-    cursor.execute("UPDATE runs SET run_num = run_num + 1 WHERE run_num = (SELECT MAX(run_num) FROM runs)")
-    conn.commit()
-
-def get_run_count():
-    cursor.execute("SELECT run_num FROM runs WHERE run_num = (SELECT MAX(run_num) FROM runs)")
-    run_count = cursor.fetchone()[0]
-    return run_count
-
-def get_high_scores():
-    cursor.execute("SELECT ldr_num, high_score FROM high_scores")
-    high_scores = cursor.fetchall()
-    return high_scores
 
 def handle_high_score():
     global high_score
@@ -304,7 +284,15 @@ def game_play():
 
 
 while True:
-    get_run_count()
+    cursor.execute("INSERT INTO sensor_data (LDR_PIN1, LDR_PIN2, timestamp) VALUES (?, ?, ?)", (LDR_PIN1, LDR_PIN2, timestamp))
+    conn.commit()
+
+    # Insert high score into the database
+    cursor.execute("INSERT INTO high_scores (score, timestamp) VALUES (?, ?)", (high_score, timestamp))
+    conn.commit()
+
+    # Insert number of times played into the database
+    conn.commit()
     menu()
     niveau()
     time.sleep(5)
