@@ -2,8 +2,8 @@ import odroid_wiringpi as wpi
 import time
 
 # Set the TRIG and ECHO pin numbers
-TRIG = 23 
-ECHO = 24 
+TRIG = 24 
+ECHO = 23 
 
 # Initialize the wiringpi library
 wpi.wiringPiSetup()

@@ -1,9 +1,9 @@
 import odroid_wiringpi as wpi
 import time
 
-TRIG = 23 #van 23 naar 27 oftewel 33 naar 36 fysiek
-ECHO = 24
-LED = 7
+TRIG = 7
+ECHO = 0
+LED = 2
 
 print("Ultra sonic metingen")
 
@@ -11,11 +11,12 @@ wpi.wiringPiSetup()
 wpi.pinMode(TRIG, wpi.OUTPUT)
 wpi.pinMode(ECHO, wpi.INPUT)
 wpi.pinMode(LED, wpi.OUTPUT)
-
+wpi.digitalWrite(LED, wpi.LOW)
 while True:
 
         stop = time.time()
         wpi.digitalWrite(TRIG, wpi.LOW)
+        print("Stop: ", stop)
 
         time.sleep(0.5)
         wpi.digitalWrite(TRIG, wpi.HIGH)
@@ -29,9 +30,10 @@ while True:
 
         while wpi.digitalRead(ECHO) == 0:
            start = time.time()
-
+           print("start echo read: ", start)
         while wpi.digitalRead(ECHO) == 1:
            stop = time.time()
+           print("Stop echo == 1: ", stop)
 
         elapsed = stop-start
 
