@@ -35,4 +35,4 @@ while True:
 
         afstand = (stop - start)*17150
 
-        print("Afstand: = ", afstand)
+        print("Afstand: = ", afstand, "cm")
