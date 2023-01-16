@@ -60,7 +60,7 @@ ECHO =  #0 fysiek
 
 #GPIO van servo en knoppen
 SERVO_PIN = 5 #18 fysiek
-EASY__BUTTON_PIN = 8 #3 fysiek
+EASY_BUTTON_PIN = 8 #3 fysiek
 MEDIUM_BUTTON_PIN = 9 #5 fysiek
 HARD_BUTTON_PIN = 30 #27 fysiek
 
@@ -74,7 +74,15 @@ wpi.pinMode(LDR_PIN3, wpi.INPUT)
 wpi.pinMode(LDR_PIN4, wpi.INPUT)
 wpi.pinMode(LDR_PIN5, wpi.INPUT)
 
-#
+#Ultrasonic wiringPiSetup
+wpi.pinMode(TRIG, wpi.OUTPUT)
+wpi.pinMode(ECHO, wpi.INPUT)
+
+#Servo en knoppen wiringPiSetup
+wpi.pinMode(SERVO_PIN, wpi.PWM_OUTPUT)
+wpi.pinMode(EASY_BUTTON_PIN, wpi.INPUT)
+wpi.pinMode(MEDIUM_BUTTON_PIN, wpi.INPUT)
+wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT)
 
 # Display initialiseren
 def lcd_init():
