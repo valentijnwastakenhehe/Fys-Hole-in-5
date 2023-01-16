@@ -46,13 +46,13 @@ E_DELAY = 0.0005
 bus = smbus.SMBus(0)  
 
 # GPIO pins hoe de ledjes en LDRs moeten worden aangesloten. 
-LED_PIN1 =  	#GPIO PIN + = '' ; - = '' ;
-LED_PIN2 =  	#GPIO PIN + = '' ; - = '' ;
-LDR_PIN1 =  	#GPIO PIN + = '' ; - = '' ; S = '' ;
-LDR_PIN2 =  	#GPIO PIN + = '' ; - = '' ; S = '' ;
-LDR_PIN3 =  	#GPIO PIN + = '' ; - = '' ; S = '' ;
-LDR_PIN4 =  	#GPIO PIN + = '' ; - = '' ; S = '' ;
-LDR_PIN5 =  	#GPIO PIN + = '' ; - = '' ; S = '' ;
+LED_PIN1 =  1	#GPIO PIN + = '' ; - = '' ;
+LED_PIN2 =  1	#GPIO PIN + = '' ; - = '' ;
+LDR_PIN1 =  15	#GPIO PIN + = '' ; - = '' ; S = '' ;
+LDR_PIN2 =  1	#GPIO PIN + = '' ; - = '' ; S = '' ;
+LDR_PIN3 =  1	#GPIO PIN + = '' ; - = '' ; S = '' ;
+LDR_PIN4 =  1	#GPIO PIN + = '' ; - = '' ; S = '' ;
+LDR_PIN5 =  1	#GPIO PIN + = '' ; - = '' ; S = '' ;
 
 # LDR leest iets af daarom is het input. Lampjes worden aangestuurd. Lasers blijven oneindig aan.
 wpi.wiringPiSetup()
@@ -142,6 +142,7 @@ def countdown(t):
         lcd_string(" ", LCD_LINE_2)
         time.sleep(1)
         t -= 1
+        countdown_finished = True
 
 
 # Start audio
@@ -203,41 +204,40 @@ def niveau():
 
 # Main code
 def game_play():
-    LDR_SCORE1 = 0
-    LDR_SCORE2 = 15
+    LDR_SCORE1= 0
+    LDR_SCORE2 = 0
+
+    pre_ldr1_value= wpi.digitalRead(LDR_PIN1)
+
+    mixer.init()
+    mixer.music.load("/root/it101-3/Audio/mariokart.mp3")
+    mixer.music.play()
     try:
         with open("high_score.dat", "rb") as f:
             high_score = pickle.load(f)
     except:
         high_score = 0
-    while input:
-        mixer.init()
-        mixer.music.load("/root/it101-3/Audio/mariokart.mp3")
-        mixer.music.play()
+
+    countdown_thread = threading.Thread(target=countdown, args=(int(t),))
+    countdown_thread.start()
+    
+    while t:
+        ldr1_value = wpi.digitalRead(LDR_PIN1)
         wpi.digitalRead(LDR_PIN1)
         time.sleep(0.125)
-        countdown(int(t))
         current_time = time.time()
         elapsed_time = current_time - start_time
-        signal_new = wpi.digitalRead(LDR_PIN1)
-        signal_newer = wpi.digitalRead(LDR_PIN2)
-            
-        if signal_new == 1 and signal_old == 0:
+        ldr2_value = wpi.digitalRead(LDR_PIN2)
+    
+    
+        if pre_ldr1_value == 1 and ldr1_value == 0:
+            ldr1_value = wpi.digitalRead(LDR_PIN1)
             wpi.digitalWrite(LED_PIN1, wpi.HIGH)
             LDR_SCORE1 += 50
-        
-        else:
-            wpi.digitalWrite(LED_PIN1, wpi.LOW)
-            signal_old = signal_new
-            
-        if signal_newer == 1 and signal_old == 0:
-            wpi.digitalWrite(LED_PIN2, wpi.HIGH)
-            LDR_SCORE2 += 20
-        
-        else:
-            wpi.digitalWrite(LED_PIN2, wpi.LOW)
-            signal_old = signal_newer
-            
+            print(50)
+        pre_ldr1_value = ldr1_value
+        time.sleep(0.125)
+    
         if elapsed_time > t:
             mixer.music.stop()
             
@@ -282,8 +282,7 @@ def game_play():
 
                 if verlopen_tijd > 15:
                     break
-        break
-
+            break
 
 while True:
     menu()
@@ -291,7 +290,8 @@ while True:
     time.sleep(5)
     x=3
     start(x)
-    lcd_string("    START", LCD_LINE_2)
+    lcd_string("    START", LCD_LINE_1)
     time.sleep(1)
     start_time = time.time()
     game_play()
+
