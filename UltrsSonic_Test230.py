@@ -38,3 +38,8 @@ while True:
 
         print("Afstand: = ", afstand, "cm")
 
+        if afstand < 70:
+            wpi.digitalWrite(LED, wpi.HIGH)
+        else:
+            wpi.digitalWrite(LED, wpi.LOW)
+
