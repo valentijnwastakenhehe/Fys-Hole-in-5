@@ -86,34 +86,35 @@ wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT)
 
 #Ultrasonic functie
 def Ultrasonic ():
+    #pak de gemiddelde van 10
     while True:
-            # send a xxSecond pulse to the TRIG pin
+        afstanden = []
+        for i in range(10):
+            #pulse van 10 microseconde naar TRIG pin
             wpi.digitalWrite(TRIG, wpi.HIGH)
-            #statement om te testen; print("trig is high now")
-
             time.sleep(0.00001)
             wpi.digitalWrite(TRIG, wpi.LOW)
-            #statement om te testen; print("now low at trig")
-
-            #Wait for the ECHO pin to go HIGH
+            #wacht tot echo hoog gaat
             while wpi.digitalRead(ECHO) == 0:
-             pass
-             #Record start time
-             start = time.time()
-            #Wait for the ECHO pin to go low
+                pass
+            #start tijd
+            start = time.time()
+            #wacht tot echo laag gaat
             while wpi.digitalRead(ECHO) == 1:
-             pass
-             #Record the stop time
-             stop = time.time()
-
+                pass
+            #stop tijd
+            stop = time.time()
             afstand = (stop - start)*17150
+            afstanden.append(afstand)
 
-            print("Afstand: = ", afstand, "cm")
+        final_afstand = sum(afstanden) / len(afstanden)
+        print("Afstand: = ", final_afstand, "cm")
 
-            if afstand < 50:
-                wpi.digitalWrite(LED, wpi.HIGH)
-            else:
-                wpi.digitalWrite(LED, wpi.LOW)
+        if final_afstand < 50:
+            wpi.digitalWrite(LED, wpi.HIGH)
+        else:
+            wpi.digitalWrite(LED, wpi.LOW)
+
 
 #Servo en knoppen functie
 def servo_en_knoppen():
