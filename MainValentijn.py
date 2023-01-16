@@ -54,6 +54,16 @@ LDR_PIN3 =  1	#GPIO PIN + = '' ; - = '' ; S = '' ;
 LDR_PIN4 =  1	#GPIO PIN + = '' ; - = '' ; S = '' ;
 LDR_PIN5 =  1	#GPIO PIN + = '' ; - = '' ; S = '' ;
 
+#GPIO van ultrasonic
+TRIG = 7 #7 fysiek
+ECHO =  #0 fysiek
+
+#GPIO van servo en knoppen
+SERVO_PIN = 5 #18 fysiek
+EASY__BUTTON_PIN = 8 #3 fysiek
+MEDIUM_BUTTON_PIN = 9 #5 fysiek
+HARD_BUTTON_PIN = 30 #27 fysiek
+
 # LDR leest iets af daarom is het input. Lampjes worden aangestuurd. Lasers blijven oneindig aan.
 wpi.wiringPiSetup()
 wpi.pinMode(LED_PIN1, wpi.OUTPUT)
@@ -63,6 +73,8 @@ wpi.pinMode(LDR_PIN2, wpi.INPUT)
 wpi.pinMode(LDR_PIN3, wpi.INPUT)
 wpi.pinMode(LDR_PIN4, wpi.INPUT)
 wpi.pinMode(LDR_PIN5, wpi.INPUT)
+
+#
 
 # Display initialiseren
 def lcd_init():
