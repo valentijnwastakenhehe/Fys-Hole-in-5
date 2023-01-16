@@ -59,7 +59,7 @@ TRIG = 7 #7 fysiek
 ECHO =  #0 fysiek
 
 #GPIO van servo en knoppen
-SERVO_PIN = 5 #18 fysiek
+SERVO_PIN = 1 #12 fysiek (oranje op servo, bruin is gnd)
 EASY_BUTTON_PIN = 8 #3 fysiek
 MEDIUM_BUTTON_PIN = 9 #5 fysiek
 HARD_BUTTON_PIN = 30 #27 fysiek
