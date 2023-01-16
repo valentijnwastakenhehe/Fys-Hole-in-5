@@ -1,7 +1,7 @@
 import odroid_wiringpi as wpi
 import time
 
-SERVO_PIN = 5 #18 fysiek
+SERVO_PIN = 1 #12 fysiek
 EASY_BUTTON_PIN = 8 #gpio 3 & 6(gnd)
 MEDIUM_BUTTON_PIN = 9 #gpio 5 & 6(gnd)
 HARD_BUTTON_PIN = 30 #gpio 27 & 6(gnd)
@@ -18,7 +18,7 @@ wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT)
 def move_servo(start, end, step):
     for servoSpin in range(start, end, step):
         wpi.pwmWrite(SERVO_PIN, servoSpin)
-        time.sleep(0.08)
+        time.sleep(0.1)
         print(servoSpin)
     time.sleep(0.2)
 

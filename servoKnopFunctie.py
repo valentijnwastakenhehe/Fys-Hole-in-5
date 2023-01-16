@@ -1,7 +1,7 @@
 import odroid_wiringpi as wpi
 import time
 
-SERVO_PIN = 5
+SERVO_PIN = 1 #12 fysiek (pwm)
 EASY_BUTTON_PIN = 8 #gpio 3 & 6(gnd)
 MEDIUM_BUTTON_PIN = 9 #gpio 5 & 6(gnd)
 HARD_BUTTON_PIN = 30 #gpio 27 & 6(gnd)
