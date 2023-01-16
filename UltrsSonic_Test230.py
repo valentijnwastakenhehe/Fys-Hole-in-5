@@ -9,10 +9,10 @@ LED = 2 #13 fysiek
 # initiaize the wiringpi library
 wpi.wiringPiSetup()
 
-# Set the TRIG pin as output and ECHO pin as input
+# Set the TRIG & LED pin as output and ECHO pin as input
 wpi.pinMode(TRIG, wpi.OUTPUT)
 wpi.pinMode(ECHO, wpi.INPUT)
-
+wpi.pinMode(LED, wpi.OUTPUT)
 
 while True:
     # send a xxSecond pulse to the TRIG pin
