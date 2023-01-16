@@ -1,7 +1,7 @@
 import odroid_wiringpi as wpi
 import time
 
-SERVO_PIN = 1
+SERVO_PIN = 1 #12 fysiek
 EASY_BUTTON_PIN = 8 #gpio 3 & 6(gnd)
 MEDIUM_BUTTON_PIN = 9 #gpio 5 & 6(gnd)
 HARD_BUTTON_PIN = 30 #gpio 27 & 6(gnd)
@@ -9,9 +9,10 @@ HARD_BUTTON_PIN = 30 #gpio 27 & 6(gnd)
 #pinnen instellen
 wpi.wiringPiSetup()
 wpi.pinMode(SERVO_PIN, wpi.PWM_OUTPUT) #set servo pin 1 to output
-wpi.pinMode(EASY_BUTTON_PIN, wpi.INPUT) #set easy to pin 8
-wpi.pinMode(MEDIUM_BUTTON_PIN, wpi.INPUT) #set medium to pin 9
-wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT) #set hard to pin 12
+#set buttons to input
+wpi.pinMode(EASY_BUTTON_PIN, wpi.INPUT) 
+wpi.pinMode(MEDIUM_BUTTON_PIN, wpi.INPUT) 
+wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT)
 
 
 def move_servo(start, end, step):
@@ -40,7 +41,3 @@ while True:
      if button_state_hard == wpi.LOW:
           move_servo(305, 110, -2)
           print("Hard mode")
-
-
-
-
