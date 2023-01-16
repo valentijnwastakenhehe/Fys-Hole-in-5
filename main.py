@@ -227,6 +227,7 @@ def game_play():
         time.sleep(0.125)
         current_time = time.time()
         elapsed_time = current_time - start_time
+<<<<<<< HEAD
         ldr2_value = wpi.digitalRead(LDR_PIN2)
     
     
@@ -238,6 +239,27 @@ def game_play():
         pre_ldr1_value = ldr1_value
         time.sleep(0.125)
     
+=======
+        signal_new1 = wpi.digitalRead(LDR_PIN1)
+        signal_new2 = wpi.digitalRead(LDR_PIN2)
+            
+        if signal_new1 == 1 and signal_old1 == 0:
+            wpi.digitalWrite(LED_PIN1, wpi.HIGH)
+            LDR_SCORE1 += 50
+        
+        else:
+            wpi.digitalWrite(LED_PIN1, wpi.LOW)
+            signal_old1 = signal_new
+            
+        if signal_new2 == 1 and signal_old2 == 0:
+            wpi.digitalWrite(LED_PIN2, wpi.HIGH)
+            LDR_SCORE2 += 20
+        
+        else:
+            wpi.digitalWrite(LED_PIN2, wpi.LOW)
+            signal_old2 = signal_newer
+            
+>>>>>>> 18e2d18029a065bb5a106fefda1087d544f5036d
         if elapsed_time > t:
             mixer.music.stop()
             
