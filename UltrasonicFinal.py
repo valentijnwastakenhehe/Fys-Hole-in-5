@@ -45,3 +45,6 @@ def Ultrasonic ():
             else:
                 wpi.digitalWrite(LED, wpi.LOW)
 
+while True:
+    Ultrasonic()
+
