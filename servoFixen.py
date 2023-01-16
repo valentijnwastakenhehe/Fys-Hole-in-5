@@ -1,3 +1,6 @@
+import odroid_wiringpi as wpi
+import time
+
 SERVO_PIN = 1
 EASY_BUTTON_PIN = 8 #gpio 3 & 6(gnd)
 MEDIUM_BUTTON_PIN = 9 #gpio 5 & 6(gnd)
