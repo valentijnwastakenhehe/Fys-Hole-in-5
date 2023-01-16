@@ -15,12 +15,13 @@ wpi.pinMode(MEDIUM_BUTTON_PIN, wpi.INPUT)
 wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT)
 
 
-def move_servo(start, end, step):
-    for servoSpin in range(start, end, step):
-        wpi.pwmWrite(SERVO_PIN, servoSpin)
-        time.sleep(0.08)
-        print(servoSpin)
-    time.sleep(0.2)
+def servo_en_knoppen(start, end, step):
+     def move_servo(start, end, step):
+          for servoSpin in range(start, end, step):
+               wpi.pwmWrite(SERVO_PIN, servoSpin)
+               time.sleep(0.08)
+               print(servoSpin)
+          time.sleep(0.2)
 
 
 while True:
@@ -41,3 +42,4 @@ while True:
      if button_state_hard == wpi.LOW:
           move_servo(305, 110, -2)
           print("Hard mode")
+
