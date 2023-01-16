@@ -18,7 +18,7 @@ wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT)
 def move_servo(start, end, step):
     for servoSpin in range(start, end, step):
         wpi.pwmWrite(SERVO_PIN, servoSpin)
-        time.sleep(0.1)
+        time.sleep(0.08)
         print(servoSpin)
     time.sleep(0.2)
 
