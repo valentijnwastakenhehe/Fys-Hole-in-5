@@ -219,24 +219,24 @@ def game_play():
         countdown(int(t))
         current_time = time.time()
         elapsed_time = current_time - start_time
-        signal_new = wpi.digitalRead(LDR_PIN1)
-        signal_newer = wpi.digitalRead(LDR_PIN2)
+        signal_new1 = wpi.digitalRead(LDR_PIN1)
+        signal_new2 = wpi.digitalRead(LDR_PIN2)
             
-        if signal_new == 1 and signal_old == 0:
+        if signal_new1 == 1 and signal_old1 == 0:
             wpi.digitalWrite(LED_PIN1, wpi.HIGH)
             LDR_SCORE1 += 50
         
         else:
             wpi.digitalWrite(LED_PIN1, wpi.LOW)
-            signal_old = signal_new
+            signal_old1 = signal_new
             
-        if signal_newer == 1 and signal_old == 0:
+        if signal_new2 == 1 and signal_old2 == 0:
             wpi.digitalWrite(LED_PIN2, wpi.HIGH)
             LDR_SCORE2 += 20
         
         else:
             wpi.digitalWrite(LED_PIN2, wpi.LOW)
-            signal_old = signal_newer
+            signal_old2 = signal_newer
             
         if elapsed_time > t:
             mixer.music.stop()
