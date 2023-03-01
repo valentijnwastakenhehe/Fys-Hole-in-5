@@ -37,3 +37,12 @@ def uit():
     global status
     status = 0
     return lamp_uit()
+    
+
+if __name__ == '__main__':
+
+   LED_PIN = 7
+
+   wpi.wiringPiSetup()
+   wpi.pinMode(LED_PIN, wpi.OUTPUT)
+   app.run(host="0.0.0.0", port=4007)
