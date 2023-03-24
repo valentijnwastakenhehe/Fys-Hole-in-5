@@ -13,8 +13,11 @@ wpi.pinMode(LED, wpi.OUTPUT)
 wpi.digitalWrite(LED, wpi.LOW)
 
 def Ultrasonic ():
-    # take an average
-    while True:
+    # assign variable final_afstand to 1000
+    final_afstand = 1000
+    # loop until afstand is smaller then 50
+    while final_afstand > 50:
+	# take an average
         afstanden = []
         for i in range(10):
             # send a xxSecond pulse to the TRIG pin
@@ -41,5 +44,6 @@ def Ultrasonic ():
             wpi.digitalWrite(LED, wpi.HIGH)
         else:
             wpi.digitalWrite(LED, wpi.LOW)
-while True:
-    Ultrasonic()
+
+Ultrasonic()
+

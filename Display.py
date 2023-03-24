@@ -1,6 +1,6 @@
 import smbus
 import time
-#import __main__
+
 
 LDR_score1 = 0
 # Define device parameters
@@ -14,8 +14,6 @@ LCD_CMD = 0  # Mode - Sending command
 
 LCD_LINE_1 = 0x80  # LCD RAM address for the 1st line
 LCD_LINE_2 = 0xC0  # LCD RAM address for the 2nd line
-LCD_LINE_3 = 0x94  # LCD RAM address for the 3rd line
-LCD_LINE_4 = 0xD4  # LCD RAM address for the 4th line
 
 LCD_BACKLIGHT = 0x08  # On
 ENABLE = 0b00000100  # Enable bit
@@ -71,8 +69,9 @@ def lcd_string(message, line):
         lcd_byte(ord(message[i]), LCD_CHR)
 
 
-# Main program block, # Initialize display
-def main():
+# Set text on display, 
+# Initialize display
+def output():
     global LDR_score1
     lcd_init()
 
@@ -80,13 +79,13 @@ def main():
     while True:
 
         LDR_score1 += 50
-        lcd_string(str(LDR_score1), LCD_LINE_1)
+        #lcd_string(str(LDR_score1), LCD_LINE_1)
 
 
-        #time.sleep(1)
+        time.sleep(1)
 
- #       lcd_string("tyfus", LCD_LINE_1)
-  #      lcd_string("tyfus", LCD_LINE_2)
+        lcd_string("Select mode:", LCD_LINE_1)
+        lcd_string("Easy, Medium or HARD", LCD_LINE_2)
 
        # time.sleep(3)
 
@@ -95,8 +94,10 @@ def main():
 if __name__ == '__main__':
 
     try:
-        main()
+        output()
     except KeyboardInterrupt:
         pass
     finally:
         lcd_byte(0x01, LCD_CMD)
+
+
