@@ -23,7 +23,7 @@ E_PULSE = 0.0005
 E_DELAY = 0.0005
 
 # Open I2C interface
-bus = smbus.SMBus(0)  # Open I2C interface for ODROID-C2
+bus = smbus.SMBus(0)  # Open I2C interface for ODROID-N2+
 
 
 # Initialise display
@@ -75,7 +75,7 @@ def output():
     global LDR_score1
     lcd_init()
 
-    # Send text to I2C TWI 1602 16x2 Serial LCD Module Display
+    # Send text to I2C
     while True:
 
         LDR_score1 += 50
@@ -85,10 +85,15 @@ def output():
         time.sleep(1)
 
         lcd_string("Select mode:", LCD_LINE_1)
-        lcd_string("Easy, Medium or HARD", LCD_LINE_2)
+        lcd_string("Easy", LCD_LINE_2)
 
-       # time.sleep(3)
+        time.sleep(2)
 
+        lcd_string("Medium", LCD_LINE_2)
+
+        time.sleep(2)
+
+        lcd_string("Hard", LCD_LINE_2)
 
 # Handling keyboard interrupts and exception utility
 if __name__ == '__main__':
