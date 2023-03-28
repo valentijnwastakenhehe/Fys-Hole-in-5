@@ -8,7 +8,7 @@ wpi.wiringPiSetup()
 wpi.pinMode(PURPLE_MEDIUM_BUTTON, wpi.INPUT)
 
 while True:
-# check button state 
+    # check button state 
     button_state_medium = wpi.digitalRead(PURPLE_MEDIUM_BUTTON)
     if button_state_medium == wpi.LOW:
         print("Medium mode")
