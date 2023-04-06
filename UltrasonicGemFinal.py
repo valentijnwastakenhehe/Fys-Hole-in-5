@@ -3,20 +3,16 @@ import time
 
 TRIG = 7
 ECHO = 0
-LED = 2
 
 wpi.wiringPiSetup()
 wpi.pinMode(TRIG, wpi.OUTPUT)
 wpi.pinMode(ECHO, wpi.INPUT)
-wpi.pinMode(LED, wpi.OUTPUT)
-
-wpi.digitalWrite(LED, wpi.LOW)
 
 def Ultrasonic ():
     # assign variable final_afstand to 1000
     final_afstand = 1000
     # loop until afstand is smaller then 50
-    while final_afstand > 50:
+    while final_afstand > 60:
 	# take an average
         afstanden = []
         for i in range(10):
@@ -38,12 +34,10 @@ def Ultrasonic ():
             afstanden.append(afstand)
 
         final_afstand = sum(afstanden) / len(afstanden)
-        print("Afstand: = ", final_afstand, "cm")
+#        print("Afstand: = ", final_afstand, "cm")
 
-        if final_afstand < 50:
-            wpi.digitalWrite(LED, wpi.HIGH)
-        else:
-            wpi.digitalWrite(LED, wpi.LOW)
+        if final_afstand < 60:
+            print("Select mode")
 
 Ultrasonic()
 
