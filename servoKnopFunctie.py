@@ -2,9 +2,9 @@ import odroid_wiringpi as wpi
 import time
 
 SERVO_PIN = 1 #12 fysiek (pwm)
-EASY_BUTTON_PIN = 8 #gpio 3 & 6(gnd)
-MEDIUM_BUTTON_PIN = 9 #gpio 5 & 6(gnd)
-HARD_BUTTON_PIN = 30 #gpio 27 & 6(gnd)
+EASY_BUTTON_PIN = 30 #fysiek 27 (SDA.3)
+MEDIUM_BUTTON_PIN = 6 #fysiek 22 (10K weerstand voor pulldown)
+HARD_BUTTON_PIN = 31 #fysiek 28 (SCL.3)
 
 #pinnen instellen
 wpi.wiringPiSetup()
@@ -32,7 +32,7 @@ def servo_en_knoppen():
 
           #Check button state and move servo to medium mode
           button_state_medium = wpi.digitalRead(MEDIUM_BUTTON_PIN)
-          if button_state_medium == wpi.LOW:
+          if button_state_medium == wpi.HIGH:
                move_servo(500, 305, -2)
                print("Medium mode")
      
