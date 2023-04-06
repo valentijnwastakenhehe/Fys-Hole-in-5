@@ -2,7 +2,6 @@ import smbus
 import time
 
 
-LDR_score1 = 0
 # Define device parameters
 I2C_ADDR = 0x27  # I2C device address, if any error,
 # change this address to 0x3f
@@ -72,17 +71,17 @@ def lcd_string(message, line):
 # Set text on display, 
 # Initialize display
 def output():
-    global LDR_score1
     lcd_init()
+    lcd_string('Welcome to', LCD_LINE_1)
+    lcd_string('Hole in 5!', LCD_LINE_2)
 
+    time.sleep(6)
     # Send text to I2C
     while True:
+#        lcd_string('Welcome to', LCD_LINE_1)
+#        lcd_string('Hole in 5!', LCD_STRING_2)
 
-        LDR_score1 += 50
-        #lcd_string(str(LDR_score1), LCD_LINE_1)
-
-
-        time.sleep(1)
+#        time.sleep(6)
 
         lcd_string("Select mode:", LCD_LINE_1)
         lcd_string("Easy", LCD_LINE_2)
@@ -94,6 +93,8 @@ def output():
         time.sleep(2)
 
         lcd_string("Hard", LCD_LINE_2)
+
+        time.sleep(2)
 
 # Handling keyboard interrupts and exception utility
 if __name__ == '__main__':
