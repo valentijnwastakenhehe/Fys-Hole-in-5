@@ -79,8 +79,8 @@ def Ultrasonic ():
         final_afstand = sum(afstanden) / len(afstanden)
 #        print("Afstand: = ", final_afstand, "cm")
 
-        if final_afstand < 60:
-            print("Select mode")
+ #       if final_afstand < 60:
+  #          print("Select mode")
 
 ####
 # code om LCD scherm in te stellen en output te genereren
@@ -129,7 +129,7 @@ def lcd_string(message, line):
 
 # Set text on display, 
 # Initialize display
-def output():
+def LCD_Welcome():
     lcd_init()
     lcd_string('Welcome to', LCD_LINE_1)
     lcd_string('Hole in 5!', LCD_LINE_2)
@@ -137,11 +137,6 @@ def output():
     time.sleep(6)
     # Send text to I2C
     while True:
-#        lcd_string('Welcome to', LCD_LINE_1)
-#        lcd_string('Hole in 5!', LCD_STRING_2)
-
-#        time.sleep(6)
-
         lcd_string("Select mode:", LCD_LINE_1)
         lcd_string("Easy", LCD_LINE_2)
 
@@ -155,16 +150,6 @@ def output():
 
         time.sleep(2)
 
-# Handling keyboard interrupts and exception utility
-if __name__ == '__main__':
-
-    try:
-        output()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        lcd_byte(0x01, LCD_CMD)
-
 #### 
 # Knoppen en servo
 def move_servo(start, end, step):
@@ -174,23 +159,62 @@ def move_servo(start, end, step):
         print(servoSpin)
     time.sleep(0.2)
 
-
-while True:
+#while True:
      #Check button state and move servo easy mode
-     button_state_easy = wpi.digitalRead(EASY_BUTTON_PIN)
-     if button_state_easy == wpi.LOW:
-          move_servo(305, 500, 2)
-          print("Easy mode")
+ ##   if button_state_easy == wpi.LOW:
+   #       move_servo(305, 500, 2)
+    #      print("Easy mode")
+     #     pressed = 1
 
      #Check button state and move servo to medium mode
-     button_state_medium = wpi.digitalRead(MEDIUM_BUTTON_PIN)
-     if button_state_medium == wpi.HIGH:
-          move_servo(500, 305, -2)
-          print("Medium mode")
+#     button_state_medium = wpi.digitalRead(MEDIUM_BUTTON_PIN)
+#     if button_state_medium == wpi.HIGH:
+#          move_servo(500, 305, -2)
+#          print("Medium mode")
+#          pressed = 1
      
      #Check button state and move servo to hard mode
-     button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
-     if button_state_hard == wpi.LOW:
-          move_servo(305, 110, -2)
-          print("Hard mode")
+#     button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
+#     if button_state_hard == wpi.LOW:
+#          move_servo(305, 110, -2)
+#          print("Hard mode")
+#          pressed = 1
+
+####
+# Run code 
+# Handling keyboard interrupts and exception utility
+if __name__ == '__main__':
+
+    try:
+        # Ultrasoinc
+        Ultrasoinc()
+        # Buttons and servo
+        pressed = 0
+        while pressed = 0:
+            #Check button state and move servo easy mode
+            button_state_easy = wpi.digitalRead(EASY_BUTTON_PIN)
+            if button_state_easy == wpi.LOW:
+                move_servo(305, 500, 2)
+                print("Easy mode")
+                pressed = 1
+
+            #Check button state and move servo to medium mode
+            button_state_medium = wpi.digitalRead(MEDIUM_BUTTON_PIN)
+            if button_state_medium == wpi.HIGH:
+                move_servo(500, 305, -2)
+                print("Medium mode")
+                pressed = 1
+     
+            #Check button state and move servo to hard mode
+            button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
+            if button_state_hard == wpi.LOW:
+                move_servo(305, 110, -2)
+                print("Hard mode")
+                pressed = 1
+        # activate LCD output
+        LCD_Welcome()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        lcd_byte(0x01, LCD_CMD)
 
