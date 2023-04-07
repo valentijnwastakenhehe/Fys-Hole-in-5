@@ -28,12 +28,16 @@ E_DELAY = 0.0005
 bus = smbus.SMBus(0)  # Open I2C interface for ODROID-N2+
 
 # Knoppen
+## De knoppen zijn verbonden met een sdc, scl en 10k weerstand op normale pin. Dit voorkomt dat de input heen en weer gaat (Hi z)
 EASY_BUTTON_PIN = 30 #fysiek 27 (SDA.3)
 MEDIUM_BUTTON_PIN = 6 #fysiek 22 (10K weerstand voor pulldown)
 HARD_BUTTON_PIN = 31 #fysiek 28 (SCL.3)
 
 # servo
 SERVO_PIN = 1 #12 fysiek (pwm)
+
+# Break beam sensor
+BEAM_10 = 3
 
 # Setup pin modes
 wpi.wiringPiSetup()
@@ -49,76 +53,75 @@ wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT)
 
 # servo
 wpi.pinMode(SERVO_PIN, wpi.PWM_OUTPUT)
+
+#break beam
+wpi.pinMode(BEAM_10, wpi.INPUT)
  
 # functie om Ultrasonic metingen in te stellen
 def Ultrasonic ():
     # assign variable final_afstand to 1000
     final_afstand = 1000
-    # loop until afstand is smaller then 50
+    # loop tot dat aftsnad < is dan 60
     while final_afstand > 60:
-	# take an average
+	# maak een gemiddelde meting van 10 metingen
         afstanden = []
         for i in range(10):
-            # send a xxSecond pulse to the TRIG pin
+            # stuur een pulse naar de TRIG pin
             wpi.digitalWrite(TRIG, wpi.HIGH)
             time.sleep(0.00001)
             wpi.digitalWrite(TRIG, wpi.LOW)
-            #Wait for the ECHO pin to go HIGH
+            # Wacht tot de echo hoog gaat 
             while wpi.digitalRead(ECHO) == 0:
                 pass
-            #Record start time
+            # sla start tijd op
             start = time.time()
-            #Wait for the ECHO pin to go low
+            # wacht tot echo pin laag gaat
             while wpi.digitalRead(ECHO) == 1:
                 pass
-            #Record the stop time
+            # sla stop tijd op
             stop = time.time()
             afstand = (stop - start)*17150
             afstanden.append(afstand)
 
         final_afstand = sum(afstanden) / len(afstanden)
-#        print("Afstand: = ", final_afstand, "cm")
-
- #       if final_afstand < 60:
-  #          print("Select mode")
 
 ####
 ## Knoppen en servo
-# servo
+# servo; 
 def move_servo(start, end, step):
-    for servoSpin in range(start, end, step):
+    for servoSpin in range(start, end, step): # for loop met start en eind punt  en snelheid
         wpi.pwmWrite(SERVO_PIN, servoSpin)
         time.sleep(0.08)
         print(servoSpin)
     time.sleep(0.2)
 
-# Easy knop + servo stand
+# Easy knop + servo stand; functie die de knop scant voor een signaal om vervolgens de servo aan te sturen
 def easyMode():
     #Check button state and move servo easy mode
     button_state_easy = wpi.digitalRead(EASY_BUTTON_PIN)
-    if button_state_easy == wpi.LOW:
+    if button_state_easy == wpi.LOW: # EASY_BUTTON_PIN zit op een SDA die een ingebouwde pull up resistor heeft dus als de knop gedrukt is geeft die een een laag signaal
         LCD_Input('Easy mode', 'selected')
         move_servo(305, 500, 2)
         time.sleep(2)
-        global pressed 
+        global pressed # global variable aanpassen
         pressed = 1
 
-# Medium knop + servo stand
+# Medium knop + servo stand; functie die de knop scant voor een signaal om vervolgens de servo aan te sturen
 def mediumMode():
     #Check button state and move servo to medium mode
     button_state_medium = wpi.digitalRead(MEDIUM_BUTTON_PIN)
-    if button_state_medium == wpi.HIGH:
+    if button_state_medium == wpi.HIGH: # MEDIUM_BUTTON_PIN zit op een normale gpio en is aangesloten met een pull down resistordus als de knop gedrukt is geeft die een hoog signaal
         LCD_Input('Medium mode', 'selected')
         move_servo(500, 305, -2)
         time.sleep(2)
         global pressed 
         pressed = 1
 
-# Hard knop + servo stand
+# Hard knop + servo stand; functie die de knop scant voor een signaal om vervolgens de servo aan te sturen
 def hardMode():
     #Check button state and move servo to hard mode
     button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
-    if button_state_hard == wpi.LOW:
+    if button_state_hard == wpi.LOW: # HARD_BUTTON_PIN zit op een SDA die een ingebouwde pull up resistor heeft dus als de knop gedrukt is geeft die een een laag signaal
         LCD_Input('Hard mode', 'selected')
         move_servo(305, 110, -2)
         time.sleep(2)
@@ -168,13 +171,13 @@ def lcd_string(message, line):
 
 ####
 # LCD with own input
-def LCD_Input(one, two):
+def LCD_Input(one, two): # argumenten voor text op regels 1 en 2 van de LCD
     lcd_init()
     lcd_string(one, LCD_LINE_1)
     lcd_string(two, LCD_LINE_2)
     time.sleep(2)
 # LCD welcome text and mode options
-def LCD_Start(welcomeWait, modeWait):
+def LCD_Start(welcomeWait, modeWait): # argumenten voor wachtijd na boodschappen op LCD
     LCD_Input('Welcome to ', 'hole in five!!')
     time.sleep(welcomeWait)
     LCD_Input('Select mode:', 'Easy')
@@ -183,15 +186,18 @@ def LCD_Start(welcomeWait, modeWait):
     time.sleep(modeWait)
     LCD_Input('Select mode:', 'Hard')
     time.sleep(modeWait)
-# LCD with one line input
-## Line 1
-def LCD1(text):
-    lcd_init()
-    lcd_string(text, LCD_LINE_1)
-## Line 2
-def LCD2(text):
-    lcd_init()
-    lcd_string(text, LCD_LINE_2)
+
+####
+# Break beam sensor functie
+def tenPoints():
+    beamTen_state = wpi.digitalRead(BEAM_10)
+    if beamTen_state == wpi.LOW:
+        print("U scored!")
+        time.sleep(0.5)
+        global score
+        score += 10
+        print(score)
+        time.sleep(1)
 
 ####
 # Main game code 
@@ -206,6 +212,8 @@ if __name__ == '__main__':
         # Initialize pressed variable
         global pressed
         pressed = 0
+        global score
+        score = 0
         while pressed == 0:
             # Display mode selection on LCD
             LCD_Input(' ', 'Select mode')
@@ -213,6 +221,7 @@ if __name__ == '__main__':
             easyMode()
             mediumMode()
             hardMode()
+            tenPoints()
 
         print('I work son')
         time.sleep(3)
