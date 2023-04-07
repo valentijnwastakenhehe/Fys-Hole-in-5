@@ -133,13 +133,14 @@ def LCD_Welcome():
     lcd_init()
     lcd_string('Welcome to', LCD_LINE_1)
     lcd_string('Hole in 5!', LCD_LINE_2)
-
+    counter = 0
     time.sleep(6)
+
     # Send text to I2C
-    while True:
+    while counter < 5:
         lcd_string("Select mode:", LCD_LINE_1)
         lcd_string("Easy", LCD_LINE_2)
-
+        counter += 0
         time.sleep(2)
 
         lcd_string("Medium", LCD_LINE_2)
