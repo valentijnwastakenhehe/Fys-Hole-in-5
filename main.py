@@ -153,11 +153,12 @@ def LCD_Welcome():
 
 ####
 # LCD with own input
-def LCD_Input(one, two)
+def LCD_Input(one, two):
     lcd_init()
-    lcd_string(one, LCD_LINE1)
-    lcd_string(two, LCD_LINE1)
-    
+    lcd_string(one, LCD_LINE_1)
+    lcd_string(two, LCD_LINE_2)
+    time.sleep(2)
+
 #### 
 # Knoppen en servo
 def move_servo(start, end, step):
@@ -197,10 +198,14 @@ if __name__ == '__main__':
         # Ultrasoinc
         Ultrasonic ()
         # LCD wlcome message and select mode
-        LCD_Welcome ()
+#        LCD_Welcome ()
         # Buttons and servo
         pressed = 0
         while pressed == 0:
+            LCD_Input('Welcome to ', 'hole in five')
+            time.sleep(2)
+            LCD_Input('Select mode:', 'Easy mode')
+            time.sleep(2)
             #Check button state and move servo easy mode
             button_state_easy = wpi.digitalRead(EASY_BUTTON_PIN)
             if button_state_easy == wpi.LOW:
@@ -224,7 +229,33 @@ if __name__ == '__main__':
                 #print("Hard mode")
                 LCD_Input('Hardmode', 'selected')
                 pressed = 1
+            LCD_Input('Select mode:', 'Medium mode')
+            time.sleep(2)
+            button_state_easy = wpi.digitalRead(EASY_BUTTON_PIN)
+            if button_state_easy == wpi.LOW:
+                move_servo(305, 500, 2)
+                #print("Easy mode")
+                LCD_Input('Easy mode', 'selected')
+                pressed = 1
+
+            #Check button state and move servo to medium mode
+            button_state_medium = wpi.digitalRead(MEDIUM_BUTTON_PIN)
+            if button_state_medium == wpi.HIGH:
+                move_servo(500, 305, -2)
+                #print("Medium mode")
+                LCD_Input('Medium mode', 'selected')
+                pressed = 1
+     
+            #Check button state and move servo to hard mode
+            button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
+            if button_state_hard == wpi.LOW:
+                move_servo(305, 110, -2)
+                #print("Hard mode")
+                LCD_Input('Hardmode', 'selected')
+                pressed = 1
+ 
         print('I work son')
+        time.sleep(3)
     except KeyboardInterrupt:
         pass
     finally:
