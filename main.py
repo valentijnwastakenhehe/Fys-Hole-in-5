@@ -1,5 +1,6 @@
 import odroid_wiringpi as wpi
 import time
+import smbus
 
 # Ultrasonic
 TRIG = 7
