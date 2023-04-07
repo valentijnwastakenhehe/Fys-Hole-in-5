@@ -128,7 +128,7 @@ def lcd_string(message, line):
 
 
 # Set text on display, 
-# Initialize display
+#  Print lines to LCD
 def LCD_Welcome():
     lcd_init()
     lcd_string('Welcome to', LCD_LINE_1)
@@ -151,6 +151,13 @@ def LCD_Welcome():
 
         time.sleep(2)
 
+####
+# LCD with own input
+def LCD_Input(one, two)
+    lcd_init()
+    lcd_string(one, LCD_LINE1)
+    lcd_string(two, LCD_LINE1)
+    
 #### 
 # Knoppen en servo
 def move_servo(start, end, step):
@@ -198,21 +205,24 @@ if __name__ == '__main__':
             button_state_easy = wpi.digitalRead(EASY_BUTTON_PIN)
             if button_state_easy == wpi.LOW:
                 move_servo(305, 500, 2)
-                print("Easy mode")
+                #print("Easy mode")
+                LCD_Input('Easy mode', 'selected')
                 pressed = 1
 
             #Check button state and move servo to medium mode
             button_state_medium = wpi.digitalRead(MEDIUM_BUTTON_PIN)
             if button_state_medium == wpi.HIGH:
                 move_servo(500, 305, -2)
-                print("Medium mode")
+                #print("Medium mode")
+                LCD_Input('Medium mode', 'selected')
                 pressed = 1
      
             #Check button state and move servo to hard mode
             button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
             if button_state_hard == wpi.LOW:
                 move_servo(305, 110, -2)
-                print("Hard mode")
+                #print("Hard mode")
+                LCD_Input('Hardmode', 'selected')
                 pressed = 1
         print('I work son')
     except KeyboardInterrupt:
