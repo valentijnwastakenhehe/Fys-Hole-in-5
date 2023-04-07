@@ -221,6 +221,7 @@ if __name__ == '__main__':
             easyMode()
             mediumMode()
             hardMode()
+        while True:
             tenPoints()
 
         print('I work son')
