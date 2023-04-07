@@ -140,7 +140,7 @@ def LCD_Welcome():
     while counter < 5:
         lcd_string("Select mode:", LCD_LINE_1)
         lcd_string("Easy", LCD_LINE_2)
-        counter += 0
+        counter += 1
         time.sleep(2)
 
         lcd_string("Medium", LCD_LINE_2)
@@ -214,6 +214,7 @@ if __name__ == '__main__':
                 move_servo(305, 110, -2)
                 print("Hard mode")
                 pressed = 1
+        print('I work son')
     except KeyboardInterrupt:
         pass
     finally:
