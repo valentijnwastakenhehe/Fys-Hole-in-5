@@ -92,8 +92,6 @@ def move_servo(start, end, step):
         print(servoSpin)
     time.sleep(0.2)
 
-# global variable pressed Initialise
-pressed = 0
 # Easy knop + servo stand
 def easyMode():
     #Check button state and move servo easy mode
@@ -102,6 +100,7 @@ def easyMode():
         LCD_Input('Easy mode', 'selected')
         move_servo(305, 500, 2)
         time.sleep(2)
+        global pressed 
         pressed = 1
 
 # Medium knop + servo stand
@@ -112,16 +111,18 @@ def mediumMode():
         LCD_Input('Medium mode', 'selected')
         move_servo(500, 305, -2)
         time.sleep(2)
+        global pressed 
         pressed = 1
 
 # Hard knop + servo stand
-def hardMode():     
+def hardMode():
     #Check button state and move servo to hard mode
     button_state_hard = wpi.digitalRead(HARD_BUTTON_PIN)
     if button_state_hard == wpi.LOW:
-        LCD_Input('Hardmode', 'selected')
+        LCD_Input('Hard mode', 'selected')
         move_servo(305, 110, -2)
         time.sleep(2)
+        global pressed 
         pressed = 1
 
 ####
@@ -172,6 +173,25 @@ def LCD_Input(one, two):
     lcd_string(one, LCD_LINE_1)
     lcd_string(two, LCD_LINE_2)
     time.sleep(2)
+# LCD welcome text and mode options
+def LCD_Start(welcomeWait, modeWait):
+    LCD_Input('Welcome to ', 'hole in five!!')
+    time.sleep(welcomeWait)
+    LCD_Input('Select mode:', 'Easy')
+    time.sleep(modeWait)
+    LCD_Input('Select mode:', 'Medium')
+    time.sleep(modeWait)
+    LCD_Input('Select mode:', 'Hard')
+    time.sleep(modeWait)
+# LCD with one line input
+## Line 1
+def LCD1(text):
+    lcd_init()
+    lcd_string(text, LCD_LINE_1)
+## Line 2
+def LCD2(text):
+    lcd_init()
+    lcd_string(text, LCD_LINE_2)
 
 ####
 # Main game code 
@@ -182,35 +202,18 @@ if __name__ == '__main__':
         # Ultrasoinc
         Ultrasonic ()
         # LCD, buttons and servo
-        LCD_Input('Welcome to ', 'hole in five')
-        time.sleep(2)
+        LCD_Start(5, 1)
         # Initialize pressed variable
+        global pressed
         pressed = 0
         while pressed == 0:
-            # Display easy mode
-            LCD_Input('Select mode:', 'Easy')
-            #Check button state and move servo easy mode
+            # Display mode selection on LCD
+            LCD_Input(' ', 'Select mode')
+            # Scan buttons and move servo
             easyMode()
             mediumMode()
             hardMode()
-            time.sleep(1)
 
-            # Display medium mode
-            LCD_Input('Select mode:', 'Medium')
-            #Check button state and move servo easy mode
-            easyMode()
-            mediumMode()
-            hardMode()
-            time.sleep(1)
-
-            # Display hard mode
-            LCD_Input('Select mode:', 'Hard')
-            #Check button state and move servo easy mode
-            easyMode()
-            mediumMode()
-            hardMode()
-            time.sleep(1)
-         
         print('I work son')
         time.sleep(3)
     except KeyboardInterrupt:
