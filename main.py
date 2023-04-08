@@ -237,24 +237,35 @@ def gameplay(secondes):
 if __name__ == '__main__':
 
     try:
-        # Ultrasoinc
-        Ultrasonic ()
-        # LCD, with wait times
-        LCD_Start(2, 0.8)
-        # Define variables
-        global pressed
-        pressed = 0
-        score = 0
-        # LCD message to select mode
-        LCD_Input(' ', 'Select mode')
-        # Loop to continuously look for a signal from a button
-        while pressed == 0:
-            # Scan buttons and move servo
-            easyMode()
-            mediumMode()
-            hardMode()
-        # Get input from break beam sensors, keep score and time
-        gameplay(tijd)
+        while True:
+            # Ultrasoinc
+            Ultrasonic ()
+            # LCD, with wait times
+            LCD_Start(2, 0.8)
+            # Define variables
+            global pressed
+            pressed = 0
+            score = 0
+            # LCD message to select mode
+            LCD_Input(' ', 'Select mode')
+            # Loop to continuously look for a signal from a button
+            while pressed == 0:
+                # Scan buttons and move servo
+                easyMode()
+                mediumMode()
+                hardMode()
+            # Get input from break beam sensors, keep score and time
+            gameplay(tijd)
+            if score < 70:
+                LCDvar1('Total score was:', score, 'Keep trying!')
+                time.sleep(3)
+                elif score > 70 and score < 400:
+                    LCDvar1('Total score was:', score, 'Young padawan')
+                    time.sleep(3)
+                    else:
+                        LCDvar1('Total score was:', score, 'Sensei')
+                        time.sleep(3)
+
 
         print('I work son')
         time.sleep(3)
