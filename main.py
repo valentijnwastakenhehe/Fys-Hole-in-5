@@ -1,6 +1,7 @@
 import odroid_wiringpi as wpi
 import time
 import smbus
+import datetime
 
 # Ultrasonic
 TRIG = 7
@@ -101,12 +102,14 @@ def easyMode():
     button_state_easy = wpi.digitalRead(EASY_BUTTON_PIN)
     if button_state_easy == wpi.LOW: # EASY_BUTTON_PIN zit op een SDA die een ingebouwde pull up resistor heeft dus als de knop gedrukt is geeft die een een laag signaal
         LCD_Input('Easy mode', 'selected')
-        move_servo(305, 500, 2)
-        time.sleep(2)
+        move_servo(305, 500, 4)
+        time.sleep(0.2)
         global pressed # global variable aanpassen
         pressed = 1
         global tijd
         tijd = 60
+        LCD_Input('60 seconds to', 'play!!')
+        time.sleep(1.4)
 
 # Medium knop + servo stand; functie die de knop scant voor een signaal om vervolgens de servo aan te sturen
 def mediumMode():
@@ -115,11 +118,13 @@ def mediumMode():
     if button_state_medium == wpi.HIGH: # MEDIUM_BUTTON_PIN zit op een normale gpio en is aangesloten met een pull down resistordus als de knop gedrukt is geeft die een hoog signaal
         LCD_Input('Medium mode', 'selected')
         move_servo(500, 305, -2)
-        time.sleep(2)
+        time.sleep(0.2)
         global pressed 
         pressed = 1
         global tijd
         tijd = 45
+        LCD_Input('45 seconds to', 'play!!')
+        time.sleep(1.4)
 
 # Hard knop + servo stand; functie die de knop scant voor een signaal om vervolgens de servo aan te sturen
 def hardMode():
@@ -128,11 +133,13 @@ def hardMode():
     if button_state_hard == wpi.LOW: # HARD_BUTTON_PIN zit op een SDA die een ingebouwde pull up resistor heeft dus als de knop gedrukt is geeft die een een laag signaal
         LCD_Input('Hard mode', 'selected')
         move_servo(305, 110, -2)
-        time.sleep(2)
-        global pressed 
+        time.sleep(0.2)
+        global pressed
         pressed = 1
         global tijd
         tijd = 30
+        LCD_Input('30 seconds to', 'play!!')
+        time.sleep(1.4)
 
 ####
 # code om LCD scherm in te stellen en output te genereren
@@ -181,7 +188,7 @@ def LCD_Input(one, two): # argumenten voor text op regels 1 en 2 van de LCD
     lcd_init()
     lcd_string(str(one), LCD_LINE_1)
     lcd_string(str(two), LCD_LINE_2)
-    time.sleep(2)
+    time.sleep(0.4)
 # LCD welcome text and mode options
 def LCD_Start(welcomeWait, modeWait): # argumenten voor wachtijd na boodschappen op LCD
     LCD_Input('Welcome to ', 'hole in five!!')
@@ -207,45 +214,22 @@ def LCDvar1(input, var, two):
     LCD_Input(message, two)
 
 ####
-# Break beam sensor functie
-def tenPoints():
-    beamTen_state = wpi.digitalRead(BEAM_10)
-    if beamTen_state == wpi.LOW:
-        print("U scored!")
-        time.sleep(0.5)
-        global score
-        score += 10
-        LCD_Input('Current score', score)
-        print(score)
-        time.sleep(0.1)
-
-####
-# Countdown en scoren bijhouden functie
+# Countdown, scoren bijhouden en naar LCD sturen functie
 def gameplay(secondes):
-    for i in range(secondes, 0, -1):
-        LCDvar1('You have', i, 'seconds to play')
+    start_tijd = datetime.datetime.now()
+    eind_tijd = start_tijd + datetime.timedelta(seconds=secondes)
+    while datetime.datetime.now() < eind_tijd:
+        resterend_tijd = eind_tijd - datetime.datetime.now()
+        LCDvar1('You have', resterend_tijd.seconds, 'seconds left')
         beamTen_state = wpi.digitalRead(BEAM_10)
         if beamTen_state == wpi.LOW:
-            print("U scored!")
-            time.sleep(0.5)
+#            print("U scored!")
+#            time.sleep(0.5)
             global score
             score += 10
             LCD_Input('Current score', score)
             print(score)
-            time.sleep(0.1)
-        time.sleep(1)
-    LCDvar('Game over!', score, 'is your score ')
- 
-####
-# Countdown functie
-def countdown(secondes):
-    start_time = datetime.datetime.now()
-    end_time = start_time + datetime.timedelta(seconds=seconds)
-    while datetime.datetime.now() < end_time:
-        remaining_time = end_time - datetime.datetime.now()
-        print(str(remaining_time.seconds) + " seconds remaining.")
-        time.sleep(1)
-
+            time.sleep(1)
 
 ####
 # Main game code 
@@ -255,21 +239,22 @@ if __name__ == '__main__':
     try:
         # Ultrasoinc
         Ultrasonic ()
-        # LCD, buttons and servo
-        LCD_Start(2, 0.5)
-        # Initialize pressed variable
+        # LCD, with wait times
+        LCD_Start(2, 0.8)
+        # Define variables
         global pressed
         pressed = 0
         score = 0
+        # LCD message to select mode
+        LCD_Input(' ', 'Select mode')
+        # Loop to continuously look for a signal from a button
         while pressed == 0:
-            # Display mode selection on LCD
-            LCD_Input(' ', 'Select mode')
             # Scan buttons and move servo
             easyMode()
             mediumMode()
             hardMode()
-        while True:
-            countdown(tijd)
+        # Get input from break beam sensors, keep score and time
+        gameplay(tijd)
 
         print('I work son')
         time.sleep(3)
