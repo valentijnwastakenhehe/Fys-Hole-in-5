@@ -203,7 +203,7 @@ def LCDvar2(one, var, input):
     LCD_Input(one, message)
 def LCDvar1(input, var, two):
     lcd_init()
-    message = str(input) + ':' + str(var)
+    message = str(input) + ' ' + str(var)
     LCD_Input(message, two)
 
 ####
@@ -249,10 +249,7 @@ if __name__ == '__main__':
         # Initialize pressed variable
         global pressed
         pressed = 0
-        global score
         score = 0
-   #     global tijd
-   #     tijd = 0
         while pressed == 0:
             # Display mode selection on LCD
             LCD_Input(' ', 'Select mode')
