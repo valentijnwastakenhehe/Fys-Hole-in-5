@@ -220,8 +220,8 @@ def tenPoints():
         time.sleep(0.1)
 
 ####
-# Countdown functie
-def countdown(secondes):
+# Countdown en scoren bijhouden functie
+def gameplay(secondes):
     for i in range(secondes, 0, -1):
         LCDvar1('You have', i, 'seconds to play')
         beamTen_state = wpi.digitalRead(BEAM_10)
@@ -236,6 +236,17 @@ def countdown(secondes):
         time.sleep(1)
     LCDvar('Game over!', score, 'is your score ')
  
+####
+# Countdown functie
+def countdown(secondes):
+    start_time = datetime.datetime.now()
+    end_time = start_time + datetime.timedelta(seconds=seconds)
+    while datetime.datetime.now() < end_time:
+        remaining_time = end_time - datetime.datetime.now()
+        print(str(remaining_time.seconds) + " seconds remaining.")
+        time.sleep(1)
+
+
 ####
 # Main game code 
 # Handling keyboard interrupts and exception utility
