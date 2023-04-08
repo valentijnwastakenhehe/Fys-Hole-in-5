@@ -10,6 +10,8 @@ score = 0
 
 def tenPoints():
     beamTen_state = wpi.digitalRead(BEAM_10)
+    print(beamTen_state)
+    time.sleep(1)
     if beamTen_state == wpi.LOW:
         print("U scored!")
         time.sleep(0.5)
@@ -17,6 +19,5 @@ def tenPoints():
         score += 10
         print(score)
         time.sleep(1)
-
 while True:
     tenPoints()
