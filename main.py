@@ -102,7 +102,7 @@ def easyMode():
     button_state_easy = wpi.digitalRead(EASY_BUTTON_PIN)
     if button_state_easy == wpi.LOW: # EASY_BUTTON_PIN zit op een SDA die een ingebouwde pull up resistor heeft dus als de knop gedrukt is geeft die een een laag signaal
         LCD_Input('Easy mode', 'selected')
-        move_servo(305, 500, 4)
+        move_servo(305, 500, 2)
         time.sleep(0.2)
         global pressed # global variable aanpassen
         pressed = 1
@@ -204,32 +204,48 @@ def LCD1(text):
     lcd_string(text, LCD_LINE_1)
     time.sleep(2)
 # variable and input on line 2
-def LCDvar2(one, var, input):
+def LCDvar2(one, input, var):
     lcd_init()
-    message = str(var) + ':' + str(input)
+    message = str(input) + ' ' + str(var)
     LCD_Input(one, message)
 def LCDvar1(input, var, two):
     lcd_init()
     message = str(input) + ' ' + str(var)
     LCD_Input(message, two)
-
+def LCDvars(input1, var1, input2, var2):
+    lcd_init()
+    message1 = str(input1) + ' ' + str(var1)
+    message2 = str(input2) + ' ' + str(var2)
+    LCD_Input(message1, message2)
 ####
 # Countdown, scoren bijhouden en naar LCD sturen functie
 def gameplay(secondes):
     start_tijd = datetime.datetime.now()
     eind_tijd = start_tijd + datetime.timedelta(seconds=secondes)
+    global score
+    score = 0
     while datetime.datetime.now() < eind_tijd:
         resterend_tijd = eind_tijd - datetime.datetime.now()
-        LCDvar1('You have', resterend_tijd.seconds, 'seconds left')
+        LCDvars('Time:', resterend_tijd.seconds,'Score:', score)
         beamTen_state = wpi.digitalRead(BEAM_10)
         if beamTen_state == wpi.LOW:
 #            print("U scored!")
 #            time.sleep(0.5)
-            global score
+#            global score
             score += 10
-            LCD_Input('Current score', score)
+          #  LCD_Input('Current score', score)
             print(score)
-            time.sleep(1)
+           # time.sleep(1)
+
+####
+# Play again function
+def playAgain():
+    button_state_easy = wpi.digitalRead(EASY_BUTTON_PIN)
+    if button_state_easy == wpi.LOW: # EASY_BUTTON_PIN zit op een SDA die een ingebouwde >
+        LCDvar2('Lets try again!', 'Try to beat', score)
+        time.sleep(2)
+        global pressed
+        pressed = 1
 
 ####
 # Main game code 
@@ -257,15 +273,19 @@ if __name__ == '__main__':
             # Get input from break beam sensors, keep score and time
             gameplay(tijd)
             if score < 70:
-                LCDvar1('Total score was:', score, 'Keep trying!')
+                LCDvar1('Score:', score, 'Keep trying!')
                 time.sleep(3)
-                elif score > 70 and score < 400:
-                    LCDvar1('Total score was:', score, 'Young padawan')
-                    time.sleep(3)
-                    else:
-                        LCDvar1('Total score was:', score, 'Sensei')
-                        time.sleep(3)
-
+            elif score >= 70 and score < 400:
+                LCDvar1('Score:', score, 'Young padawan')
+                time.sleep(3)
+            else:
+                LCDvar1('Score:', score, 'Sensei')
+                time.sleep(3)
+            LCD_Input('Play again?', 'Press easy!!')
+            pressed = 0
+            while pressed == 0:
+                playAgain()
+            lcd_byte(0x01, LCD_CMD)
 
         print('I work son')
         time.sleep(3)

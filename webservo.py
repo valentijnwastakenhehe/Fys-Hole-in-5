@@ -49,5 +49,5 @@ if __name__ == '__main__':
    wpi.wiringPiSetup()
    wpi.pinMode(SERVO_PIN, wpi.PWM_OUTPUT)
 
-   app.run(host="0.0.0.0", port=4008)
+   app.run(host="0.0.0.0", port=4009)
 
