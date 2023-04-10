@@ -48,7 +48,7 @@ app = Flask(__name__, template_folder='templateservo')
 
 # Database connectie
 database = mysql.connector.connect(
-  host="oege.ie.hva.nl/",
+  host="oege.ie.hva.nl",
   user="bruggev",
   password="#bnbpLjKr6L8mx",
   database="zbruggev"
@@ -271,6 +271,16 @@ def LCDvars(input1, var1, input2, var2):
     LCD_Input(message1, message2)
 ####
 # Countdown, scoren bijhouden en naar LCD sturen functie
+#cursor ini
+cursor = database.cursor()
+
+def breakBeamData(cursor, database, score):
+    scoreTimestamp = datetime.datetime.now()
+    sql = "INSERT INTO breakBeam (timestamp, score) VALUES (%s, %s)"
+    val = (scoreTimestamp, score)
+    cursor.execute(sql, val)
+    database.commit()
+
 def gameplay(secondes):
     start_tijd = datetime.datetime.now()
     eind_tijd = start_tijd + datetime.timedelta(seconds=secondes)
@@ -282,13 +292,9 @@ def gameplay(secondes):
         beamTen_state = wpi.digitalRead(BEAM_10)
         if beamTen_state == wpi.LOW:
             score += 10
-            #data naar database
-            scoreTimestamp = datetime.datetime.now()
-            sql = "INSERT INTO breakBeam (score, scoreTimestamp) VALUES (%s, %s)"
-            values = (score, scoreTimestamp)
-            cursor.execute(sql, values)
-            database.commit()
             print(score)
+            t = threading.Thread(target=breakBeamData, args=(cursor, database, score))
+            t.start()
 
 ####
 # Play again function
