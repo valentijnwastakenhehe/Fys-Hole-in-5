@@ -3,6 +3,7 @@ import time
 import smbus
 import datetime
 from flask import Flask, render_template
+import threading
 
 # Ultrasonic
 TRIG = 7
@@ -294,10 +295,12 @@ def playAgain():
 # Handling keyboard interrupts and exception utility
 if __name__ == '__main__':
 
+    # Thread to run website along with rest of code
+    servo_thread = threading.Thread(target=app.run, kwargs={'host': '0.0.0.0', 'port': 4009})
+    servo_thread.start()
+
     try:
         while True:
-            # servo website control
-            app.run(host="0.0.0.0", port=4009)
             # Ultrasoinc
             Ultrasonic ()
             # LCD, with wait times
@@ -336,5 +339,7 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         pass
     finally:
+        # LCD leeg halen
         lcd_byte(0x01, LCD_CMD)
-
+        # website stoppen als programma gestop wordt
+        servo_thread.join()
