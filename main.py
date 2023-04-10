@@ -4,6 +4,7 @@ import smbus
 import datetime
 from flask import Flask, render_template
 import threading
+import mysql.connector
 
 # Ultrasonic
 TRIG = 7
@@ -44,6 +45,14 @@ BEAM_10 = 3
 
 # Flask for webserver
 app = Flask(__name__, template_folder='templateservo')
+
+# Database connectie
+database = mysql.connector.connect(
+  host="oege.ie.hva.nl/",
+  user="bruggev",
+  password="#bnbpLjKr6L8mx",
+  database="zbruggev"
+)
 
 # Setup pin modes
 wpi.wiringPiSetup()
@@ -272,13 +281,14 @@ def gameplay(secondes):
         LCDvars('Time:', resterend_tijd.seconds,'Score:', score)
         beamTen_state = wpi.digitalRead(BEAM_10)
         if beamTen_state == wpi.LOW:
-#            print("U scored!")
-#            time.sleep(0.5)
-#            global score
             score += 10
-          #  LCD_Input('Current score', score)
+            #data naar database
+            scoreTimestamp = datetime.datetime.now()
+            sql = "INSERT INTO breakBeam (score, scoreTimestamp) VALUES (%s, %s)"
+            values = (score, scoreTimestamp)
+            cursor.execute(sql, values)
+            database.commit()
             print(score)
-           # time.sleep(1)
 
 ####
 # Play again function

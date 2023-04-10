@@ -22,15 +22,13 @@ cursor = db.cursor()
 # beam state bij variable 
 beamTen_state = wpi.digitalRead(BEAM_10)
 
-# Continuously read temperature data and write it to the database
 if beamTen_state == wpi.LOW:
     timestamp = int(time.time())
 
-    # Insert the temperature and timestamp into the database
     sql = "INSERT INTO breakBeam (score, timestamp) VALUES (%s, %s)"
     values = (beamTen_state, timestamp)
     cursor.execute(sql, values)
-    db.commit()
+    database.commit()
 
     # Wait for 5 seconds before reading the sensor data again
     time.sleep(5)
