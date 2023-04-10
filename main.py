@@ -2,6 +2,7 @@ import odroid_wiringpi as wpi
 import time
 import smbus
 import datetime
+from flask import Flask, render_template
 
 # Ultrasonic
 TRIG = 7
@@ -39,6 +40,9 @@ SERVO_PIN = 1 #12 fysiek (pwm)
 
 # Break beam sensor
 BEAM_10 = 3
+
+# Flask for webserver
+app = Flask(__name__, template_folder='templateservo')
 
 # Setup pin modes
 wpi.wiringPiSetup()
@@ -140,6 +144,44 @@ def hardMode():
         tijd = 30
         LCD_Input('30 seconds to', 'play!!')
         time.sleep(1.4)
+
+####
+# servo control from website
+def easy_mode():
+    for servoSpin in range(305, 500, 2):
+        wpi.pwmWrite(SERVO_PIN, servoSpin)
+        time.sleep(0.08)
+    return "easy mode"
+
+def medium_mode():
+    for servoSpin in range(500, 305, -2):
+        wpi.pwmWrite(SERVO_PIN, servoSpin)
+        time.sleep(0.08)
+    return "medium mode"
+
+def hard_mode():
+
+    for servoSpin in range(305, 110, -2):
+        wpi.pwmWrite(SERVO_PIN, servoSpin)
+        time.sleep(0.08)
+    return "hard mode"
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/easy')
+def easy():
+    return easy_mode()
+
+@app.route('/medium')
+def medium():
+    return medium_mode()
+
+@app.route('/hard')
+def hard():
+    return hard_mode()
+
 
 ####
 # code om LCD scherm in te stellen en output te genereren
@@ -254,6 +296,8 @@ if __name__ == '__main__':
 
     try:
         while True:
+            # servo website control
+            app.run(host="0.0.0.0", port=4009)
             # Ultrasoinc
             Ultrasonic ()
             # LCD, with wait times
