@@ -2,7 +2,7 @@ from flask import Flask, render_template
 import odroid_wiringpi as wpi
 import time
 
-app = Flask(__name__, template_folder='templateservo')
+app = Flask(__name__, template_folder='templates')
 
 
 def easy_mode():
@@ -40,6 +40,8 @@ def medium():
 def hard():
     return hard_mode()
 
+@app.route('/breakBeam')
+    return render_template('breakBeam.html')
 
 if __name__ == '__main__':
 
