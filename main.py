@@ -180,7 +180,7 @@ def move_servo(start, end, step):
     for servoSpin in range(start, end, step): # for loop met start en eind punt  en snelheid
         wpi.pwmWrite(SERVO_PIN, servoSpin)
         time.sleep(0.08)
-        print(servoSpin)
+#        print(servoSpin)
     time.sleep(0.2)
 
 ## Knoppen
@@ -333,9 +333,11 @@ def LCD_Start(welcomeWait, modeWait): # argumenten voor wachtijd na boodschappen
     time.sleep(modeWait)
     LCD_Input('Select mode:', 'Hard')
     time.sleep(modeWait)
-def LCD1(text):
+# functie om text en een variable te printen op lijn 1 van LCD
+def LCD_Your_Score(var):
     lcd_init()
-    lcd_string(text, LCD_LINE_1)
+    message = str('Your score:') + ' ' +str(var)
+    lcd_string(message, LCD_LINE_1)
     time.sleep(2)
 # variable and input on line 2
 def LCDvar2(one, input, var):
@@ -416,7 +418,7 @@ def breakBeamTable():
     write_to_file(contents, filename)
     cursor.close()
     database.close()
-    print("MySQL connection is closed.")
+#    print("MySQL connection is closed.")
 
 ####
 # Countdown, scoren bijhouden en naar LCD sturen functie
@@ -433,10 +435,9 @@ def gameplay(secondes):
         beamTen_state = wpi.digitalRead(BEAM_10)
         if beamTen_state == wpi.LOW:
             score += 10
-            print(score)
+#            print(score)
             t = threading.Thread(target=breakBeamData, args=(cursor, database, score))
             t.start()
-            
 
 ####
 # Play again function
@@ -480,14 +481,14 @@ if __name__ == '__main__':
             breakBeamTable()
             if score < 70:
                 LCDvar1('Score:', score, 'Keep trying!')
-                time.sleep(3)
+                time.sleep(5)
             elif score >= 70 and score < 400:
                 LCDvar1('Score:', score, 'Young padawan')
-                time.sleep(3)
+                time.sleep(5)
             else:
                 LCDvar1('Score:', score, 'Sensei')
-                time.sleep(3)
-            LCD_Input('Play again?', 'Press easy!!')
+                time.sleep(5)
+            LCD_Input('Play again?', 'Press green!!')
             pressed = 0
             while pressed == 0:
                 playAgain()
