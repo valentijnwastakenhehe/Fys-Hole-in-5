@@ -444,6 +444,7 @@ def gameplay(secondes):
         for beam, beam_score in beams.items(): # loop door de dictionary beams met key en value (score en definitie)
             if wpi.digitalRead(beam) == wpi.LOW: # beam is de key
                 score += beam_score # beam_score is de value
+                # Stuur data van break beam sensor naar database
                 breakBeamThread = threading.Thread(target=breakBeamData, args=(cursor, database, score)) # thread van breakbeam om data naar database te versturen
                 breakBeamThread.start()
 
@@ -458,25 +459,26 @@ def playAgain():
         pressed = 1
 
 def main():
-while True:
-            # Ultrasoinc
+    while True:
+    # Ultrasoinc
     Ultrasonic ()
-            # LCD, with wait times
+    # LCD, with wait times
     LCD_Start(2, 0.8)
-            # Define variables
+    # Define variables
     global pressed
     pressed = 0
     score = 0
-            # LCD message to select mode
+    # LCD message to select mode
     LCD_Input(' ', 'Select mode')
-            # Loop to continuously look for a signal from a button
+    # Loop to continuously look for a signal from a button
     while pressed == 0:
-                # Scan buttons and move servo
+        # Scan buttons and move servo
         easyMode()
         mediumMode()
         hardMode()
-            # Get input from break beam sensors, keep score and time
+    # Get input from break beam sensors, keep score and time
     gameplay(tijd)
+    # Create a table on website from breakbeam database
     breakBeamTable()
     if score < 70:
         LCDvar1('Score:', score, 'Keep trying!')
@@ -494,15 +496,16 @@ while True:
     lcd_byte(0x01, LCD_CMD)
 
 ####
-# Main game code 
+# Code runnen
 # Handling keyboard interrupts and exception utility
 if __name__ == '__main__':
 
     # Thread to run website along with rest of code
     servo_thread = threading.Thread(target=app.run, kwargs={'host': '0.0.0.0', 'port': 4009})
-    servo_thread.start()
+    
 
     try:
+        servo_thread.start()
         main()
 
     except KeyboardInterrupt:
