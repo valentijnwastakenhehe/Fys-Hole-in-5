@@ -460,40 +460,40 @@ def playAgain():
 
 def main():
     while True:
-    # Ultrasoinc
-    Ultrasonic ()
-    # LCD, with wait times
-    LCD_Start(2, 0.8)
-    # Define variables
-    global pressed
-    pressed = 0
-    score = 0
-    # LCD message to select mode
-    LCD_Input(' ', 'Select mode')
-    # Loop to continuously look for a signal from a button
-    while pressed == 0:
-        # Scan buttons and move servo
-        easyMode()
-        mediumMode()
-        hardMode()
-    # Get input from break beam sensors, keep score and time
-    gameplay(tijd)
-    # Create a table on website from breakbeam database
-    breakBeamTable()
-    if score < 70:
-        LCDvar1('Score:', score, 'Keep trying!')
-        time.sleep(5)
-    elif score >= 70 and score < 400:
-        LCDvar1('Score:', score, 'Young padawan')
-        time.sleep(5)
-    else:
-        LCDvar1('Score:', score, 'Sensei')
-        time.sleep(5)
-    LCD_Input('Play again?', 'Press green!!')
-    pressed = 0
-    while pressed == 0:
-        playAgain()
-    lcd_byte(0x01, LCD_CMD)
+        # Ultrasoinc
+        Ultrasonic ()
+        # LCD, with wait times
+        LCD_Start(2, 0.8)
+        # Define variables
+        global pressed
+        pressed = 0
+        score = 0
+        # LCD message to select mode
+        LCD_Input(' ', 'Select mode')
+        # Loop to continuously look for a signal from a button
+        while pressed == 0:
+            # Scan buttons and move servo
+            easyMode()
+            mediumMode()
+            hardMode()
+        # Get input from break beam sensors, keep score and time
+        gameplay(tijd)
+        # Create a table on website from breakbeam database
+        breakBeamTable()
+        if score < 70:
+            LCDvar1('Score:', score, 'Keep trying!')
+            time.sleep(5)
+        elif score >= 70 and score < 400:
+            LCDvar1('Score:', score, 'Young padawan')
+            time.sleep(5)
+        else:
+            LCDvar1('Score:', score, 'Sensei')
+            time.sleep(5)
+        LCD_Input('Play again?', 'Press green!!')
+        pressed = 0
+        while pressed == 0:
+            playAgain()
+        lcd_byte(0x01, LCD_CMD)
 
 ####
 # Code runnen
