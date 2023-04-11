@@ -1,5 +1,4 @@
 import mysql.connector
-import webbrowser
 
 def connect_to_database():
     database = mysql.connector.connect(
@@ -10,14 +9,14 @@ def connect_to_database():
     )
     return database
 
-def get_break_beam_data(cursor):
-    break_beam_query = """SELECT timestamp, score FROM breakBeam"""
-    cursor.execute(break_beam_query)
+def get_ultrasonic_data(cursor):
+    ultrasonic_query = "SELECT timestamp, distance FROM ultrasonic"
+    cursor.execute(ultrasonic_query)
     return cursor.fetchall()
 
-def breakBeamHTMLTable(result):
+def ultrasonicHTMLTable(result):
     p = []
-    tbl = "<tr><th>Timestamp</th><th>Score</th></tr>"
+    tbl = "<tr><th>Timestamp</th><th>Distance</th></tr>"
     p.append(tbl)
     for row in result:
         a = "<tr><td>%s</td>"%row[0]
@@ -30,17 +29,17 @@ def write_to_file(contents, filename):
     with open(filename, 'w') as f:
         f.write(contents)
 
-def breakBeamTable():
+def ultrasonicTable():
     database = connect_to_database()
     cursor = database.cursor()
     print('connected to database')
-    result = get_break_beam_data(cursor)
+    result = get_ultrasonic_data(cursor)
     contents = '''<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     <html>
     <head>
     <meta content="text/html; charset=ISO-8859-1"
     http-equiv="content-type">
-    <title>Break beam data</title>
+    <title>Ultrasonic data</title>
     <style>
     table, th, td {
       border: 1px solid black;
@@ -50,17 +49,17 @@ def breakBeamTable():
     </head>
     <body>
     <table>
-      <caption> Score and timestamp </caption>
+      <caption> Distance and timestamp </caption>
     %s
     </table>
     </body>
     </html>
-    ''' % breakBeamHTMLTable(result)
-    filename = 'templates/breakBeam.html'
+    ''' % ultrasonicHTMLTable(result)
+    filename = 'templates/ultrasonic.html'
     write_to_file(contents, filename)
     cursor.close()
     database.close()
     print("MySQL connection is closed.")
 
 if __name__ == '__main__':
-    breakBeamTable()
+    ultrasonicTable()

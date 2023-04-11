@@ -44,6 +44,10 @@ def hard():
 def breakBeamTable():
     return render_template('breakBeam.html')
 
+@app.route('/ultrasonic')
+def ultrasonic():
+    return render_template('ultrasonic.html')
+
 if __name__ == '__main__':
 
    SERVO_PIN = 1

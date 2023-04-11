@@ -44,7 +44,7 @@ SERVO_PIN = 1 #12 fysiek (pwm)
 BEAM_10 = 3
 
 # Flask for webserver
-app = Flask(__name__, template_folder='templateservo')
+app = Flask(__name__, template_folder='templates')
 
 # Setup pin modes
 wpi.wiringPiSetup()
@@ -75,6 +75,15 @@ def connect_to_database():
     )
     return database
 
+def ultrasonicData(cursor, database, final_afstand):
+    database = connect_to_database()  # functie connect_to_database wordt gebruikt om verbinding te maken met database
+    cursor = database.cursor()
+    distanceTimestamp = datetime.datetime.now()
+    sql = "INSERT INTO ultrasonic (timestamp, distance) VALUES (%s, %s)" #stop de variable distance en timestamp in de tabel breakBeam
+    val = (distanceTimestamp, final_afstand)
+    cursor.execute(sql, val)
+    database.commit()
+
 ####
 #  Ultrasonic metingen nemen
 def Ultrasonic ():
@@ -82,6 +91,8 @@ def Ultrasonic ():
     final_afstand = 1000
     # loop tot dat aftsnad < is dan 60
     while final_afstand > 60:
+        database = connect_to_database()
+        cursor = database.cursor()
 	# maak een gemiddelde meting van 10 metingen
         afstanden = []
         for i in range(10):
@@ -103,7 +114,8 @@ def Ultrasonic ():
             afstanden.append(afstand)
 
         final_afstand = sum(afstanden) / len(afstanden)
-
+    ultrasonic_thread = threading.Thread(target=ultrasonicData, args=(cursor, database, final_afstand))
+    ultrasonic_thread.start()
 ####
 ## Knoppen en servo
 # servo; 
@@ -198,7 +210,7 @@ def hard():
 
 # breakbeam tabel
 @app.route('/breakBeam')
-def breakBeamTable():
+def breakBeam():
     return render_template('breakBeam.html')
 
 ####
@@ -287,7 +299,7 @@ def breakBeamData(cursor, database, score):
     database.commit()
 
 # Break beam data uit database halen en in tabel op website zetten
-def get_break_beam_data(table): #functie die de tabel data returned
+def get_break_beam_data(cursor): #functie die de tabel data returned
     break_beam_query = """SELECT timestamp, score FROM breakBeam""" # Pak alle data uit de tabel breakBeam
     cursor.execute(break_beam_query)
     return cursor.fetchall()
@@ -313,7 +325,7 @@ def write_to_file(contents, filename):
 def breakBeamTable():
     database = connect_to_database()
     cursor = database.cursor()
-    result = get_break_beam_data(table)
+    result = get_break_beam_data(cursor)
     contents = '''<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     <html>
     <head>
