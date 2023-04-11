@@ -65,7 +65,7 @@ wpi.pinMode(SERVO_PIN, wpi.PWM_OUTPUT)
 wpi.pinMode(BEAM_10, wpi.INPUT)
  
 ####
-# cnnectie met database
+# connectie met database
 def connect_to_database():
     database = mysql.connector.connect(
         host="oege.ie.hva.nl",
@@ -75,8 +75,8 @@ def connect_to_database():
     )
     return database
 
-
-# functie om Ultrasonic metingen in te stellen
+####
+#  Ultrasonic metingen nemen
 def Ultrasonic ():
     # assign variable final_afstand to 1000
     final_afstand = 1000
@@ -196,6 +196,10 @@ def medium():
 def hard():
     return hard_mode()
 
+# breakbeam tabel
+@app.route('/breakBeam')
+def breakBeamTable():
+    return render_template('breakBeam.html')
 
 ####
 # code om LCD scherm in te stellen en output te genereren
@@ -232,9 +236,7 @@ def lcd_toggle_enable(bits):
 # Send string to display
 def lcd_string(message, line):
     message = message.ljust(LCD_WIDTH, " ")
-
     lcd_byte(line, LCD_CMD)
-
     for i in range(LCD_WIDTH):
         lcd_byte(ord(message[i]), LCD_CHR)
 
@@ -274,16 +276,73 @@ def LCDvars(input1, var1, input2, var2):
     message2 = str(input2) + ' ' + str(var2)
     LCD_Input(message1, message2)
 ####
-# Countdown, scoren bijhouden en naar LCD sturen functie
+# Break beam data versturen naar database 
 def breakBeamData(cursor, database, score):
-    database = connect_to_database()
+    database = connect_to_database()  # functie connect_to_database wordt gebruikt om verbinding te maken met database
     cursor = database.cursor()
     scoreTimestamp = datetime.datetime.now()
-    sql = "INSERT INTO breakBeam (timestamp, score) VALUES (%s, %s)"
+    sql = "INSERT INTO breakBeam (timestamp, score) VALUES (%s, %s)" #stop de variable score en timestamp in de tabel breakBeam
     val = (scoreTimestamp, score)
     cursor.execute(sql, val)
     database.commit()
 
+# Break beam data uit database halen en in tabel op website zetten
+def get_break_beam_data(table): #functie die de tabel data returned
+    break_beam_query = """SELECT timestamp, score FROM breakBeam""" # Pak alle data uit de tabel breakBeam
+    cursor.execute(break_beam_query)
+    return cursor.fetchall()
+
+# functie die een list variable opslaat om een tabel in html te creëren met kopjes te returnen
+def breakBeamHTMLTable(result): 
+    p = []
+    tbl = "<tr><th>Timestamp</th><th>Score</th></tr>"
+    p.append(tbl)
+    for row in result:
+        a = "<tr><td>%s</td>"%row[0]
+        p.append(a)
+        b = "<td>%s</td></tr>"%row[1]
+        p.append(b)
+    return ''.join(p)
+
+#functie om een file aan te maken voor een html tabel
+def write_to_file(contents, filename):
+    with open(filename, 'w') as f:
+        f.write(contents)
+
+#functie die data van een database omzet naar een tabel op een website
+def breakBeamTable():
+    database = connect_to_database()
+    cursor = database.cursor()
+    result = get_break_beam_data(table)
+    contents = '''<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+    <html>
+    <head>
+    <meta content="text/html; charset=ISO-8859-1"
+    http-equiv="content-type">
+    <title>Break beam data</title>
+    <style> 
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    </style>
+    </head>
+    <body>
+    <table>
+      <caption> Score and timestamp </caption>
+    %s
+    </table>
+    </body>
+    </html>
+    ''' % breakBeamHTMLTable(result)
+    filename = 'templates/breakBeam.html'
+    write_to_file(contents, filename)
+    cursor.close()
+    database.close()
+    print("MySQL connection is closed.")
+
+####
+# Countdown, scoren bijhouden en naar LCD sturen functie
 def gameplay(secondes):
     start_tijd = datetime.datetime.now()
     eind_tijd = start_tijd + datetime.timedelta(seconds=secondes)
@@ -300,6 +359,7 @@ def gameplay(secondes):
             print(score)
             t = threading.Thread(target=breakBeamData, args=(cursor, database, score))
             t.start()
+            
 
 ####
 # Play again function
@@ -340,6 +400,7 @@ if __name__ == '__main__':
                 hardMode()
             # Get input from break beam sensors, keep score and time
             gameplay(tijd)
+            breakBeamTable()
             if score < 70:
                 LCDvar1('Score:', score, 'Keep trying!')
                 time.sleep(3)
@@ -358,7 +419,7 @@ if __name__ == '__main__':
         print('I work son')
         time.sleep(3)
     except KeyboardInterrupt:
-        # website stoppen als programma gestop wordt
+        # website stoppen als programma gestopt wordt
         servo_thread.join()
     finally:
         # LCD leeg halen

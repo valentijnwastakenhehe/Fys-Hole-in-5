@@ -33,6 +33,7 @@ def write_to_file(contents, filename):
 def breakBeamTable():
     database = connect_to_database()
     cursor = database.cursor()
+    print('connected to database')
     result = get_break_beam_data(cursor)
     contents = '''<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     <html>
