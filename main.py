@@ -120,7 +120,6 @@ def write_to_file(contents, filename):
 def ultrasonicTable():
     database = connect_to_database()
     cursor = database.cursor()
-    print('connected to database')
     result = get_ultrasonic_data(cursor)
     contents = '''<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     <html>
@@ -147,7 +146,6 @@ def ultrasonicTable():
     write_to_file(contents, filename)
     cursor.close()
     database.close()
-    print("MySQL connection is closed.")
 
 ##
 #  Ultrasonic metingen nemen
@@ -426,7 +424,6 @@ def breakBeamTable():
     write_to_file(contents, filename)
     cursor.close()
     database.close()
-#    print("MySQL connection is closed.")
 
 ####
 # Countdown, scoren bijhouden en naar LCD sturen functie
@@ -461,7 +458,8 @@ def playAgain():
 def main():
     while True:
         # Ultrasoinc
-        Ultrasonic ()
+        Ultrasonic()
+        ultrasonicTable()
         # LCD, with wait times
         LCD_Start(2, 0.8)
         # Define variables
