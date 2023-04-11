@@ -64,7 +64,7 @@ wpi.pinMode(SERVO_PIN, wpi.PWM_OUTPUT)
 #break beam
 wpi.pinMode(BEAM_10, wpi.INPUT)
  
-####
+#### Ultrasonic + database
 # connectie met database
 def connect_to_database():
     database = mysql.connector.connect(
@@ -75,6 +75,7 @@ def connect_to_database():
     )
     return database
 
+# Ultrasonic data naar database versturen
 def ultrasonicData(cursor, database, final_afstand):
     database = connect_to_database()  # functie connect_to_database wordt gebruikt om verbinding te maken met database
     cursor = database.cursor()
@@ -84,7 +85,63 @@ def ultrasonicData(cursor, database, final_afstand):
     cursor.execute(sql, val)
     database.commit()
 
-####
+# pak data uit de tabel ultrasonic op de database
+def get_ultrasonic_data(cursor):
+    ultrasonic_query = "SELECT timestamp, distance FROM ultrasonic"
+    cursor.execute(ultrasonic_query)
+    return cursor.fetchall()
+
+# functie om een lijst te creëren van de tabel ultrasonic 
+def ultrasonicHTMLTable(result):
+    p = []
+    tbl = "<tr><th>Timestamp</th><th>Distance</th></tr>"
+    p.append(tbl)
+    for row in result:
+        a = "<tr><td>%s</td>"%row[0]
+        p.append(a)
+        b = "<td>%s</td></tr>"%row[1]
+        p.append(b)
+    return ''.join(p)
+
+# functie om een html file te creëren
+def write_to_file(contents, filename):
+    with open(filename, 'w') as f:
+        f.write(contents)
+
+# functie om de html file te maken met ultrasonic data uit de database
+def ultrasonicTable():
+    database = connect_to_database()
+    cursor = database.cursor()
+    print('connected to database')
+    result = get_ultrasonic_data(cursor)
+    contents = '''<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+    <html>
+    <head>
+    <meta content="text/html; charset=ISO-8859-1"
+    http-equiv="content-type">
+    <title>Ultrasonic data</title>
+    <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    </style>
+    </head>
+    <body>
+    <table>
+      <caption> Distance and timestamp </caption>
+    %s
+    </table>
+    </body>
+    </html>
+    ''' % ultrasonicHTMLTable(result)
+    filename = 'templates/ultrasonic.html'
+    write_to_file(contents, filename)
+    cursor.close()
+    database.close()
+    print("MySQL connection is closed.")
+
+##
 #  Ultrasonic metingen nemen
 def Ultrasonic ():
     # assign variable final_afstand to 1000
@@ -114,11 +171,11 @@ def Ultrasonic ():
             afstanden.append(afstand)
 
         final_afstand = sum(afstanden) / len(afstanden)
-    ultrasonic_thread = threading.Thread(target=ultrasonicData, args=(cursor, database, final_afstand))
-    ultrasonic_thread.start()
-####
-## Knoppen en servo
-# servo; 
+    # functie aanroepen om data in database op te slaan
+    ultrasonicData(cursor, database, final_afstand)
+
+#### Knoppen en servo
+## servo; 
 def move_servo(start, end, step):
     for servoSpin in range(start, end, step): # for loop met start en eind punt  en snelheid
         wpi.pwmWrite(SERVO_PIN, servoSpin)
@@ -126,6 +183,7 @@ def move_servo(start, end, step):
         print(servoSpin)
     time.sleep(0.2)
 
+## Knoppen
 # Easy knop + servo stand; functie die de knop scant voor een signaal om vervolgens de servo aan te sturen
 def easyMode():
     #Check button state and move servo easy mode
@@ -171,8 +229,8 @@ def hardMode():
         LCD_Input('30 seconds to', 'play!!')
         time.sleep(1.4)
 
-####
-# servo control from website
+#### Website control
+## Servo
 def easy_mode():
     for servoSpin in range(305, 500, 2):
         wpi.pwmWrite(SERVO_PIN, servoSpin)
@@ -208,10 +266,16 @@ def medium():
 def hard():
     return hard_mode()
 
+## Tabellen
 # breakbeam tabel
 @app.route('/breakBeam')
 def breakBeam():
     return render_template('breakBeam.html')
+
+# Ultrasonic tabel
+@app.route('/ultrasonic')
+def ultrasonic():
+    return render_template('ultrasonic.html')
 
 ####
 # code om LCD scherm in te stellen en output te genereren
@@ -287,7 +351,8 @@ def LCDvars(input1, var1, input2, var2):
     message1 = str(input1) + ' ' + str(var1)
     message2 = str(input2) + ' ' + str(var2)
     LCD_Input(message1, message2)
-####
+
+#### Break beam data 
 # Break beam data versturen naar database 
 def breakBeamData(cursor, database, score):
     database = connect_to_database()  # functie connect_to_database wordt gebruikt om verbinding te maken met database
