@@ -46,14 +46,6 @@ BEAM_10 = 3
 # Flask for webserver
 app = Flask(__name__, template_folder='templateservo')
 
-# Database connectie
-database = mysql.connector.connect(
-  host="oege.ie.hva.nl",
-  user="bruggev",
-  password="#bnbpLjKr6L8mx",
-  database="zbruggev"
-)
-
 # Setup pin modes
 wpi.wiringPiSetup()
 
@@ -72,6 +64,17 @@ wpi.pinMode(SERVO_PIN, wpi.PWM_OUTPUT)
 #break beam
 wpi.pinMode(BEAM_10, wpi.INPUT)
  
+####
+# cnnectie met database
+    database = mysql.connector.connect(
+        host="oege.ie.hva.nl",
+        user="bruggev",
+        password="#bnbpLjKr6L8mx",
+        database="zbruggev"
+    )
+    return database
+
+
 # functie om Ultrasonic metingen in te stellen
 def Ultrasonic ():
     # assign variable final_afstand to 1000
@@ -271,10 +274,9 @@ def LCDvars(input1, var1, input2, var2):
     LCD_Input(message1, message2)
 ####
 # Countdown, scoren bijhouden en naar LCD sturen functie
-#cursor ini
-cursor = database.cursor()
-
 def breakBeamData(cursor, database, score):
+    database = connect_to_database()
+    cursor = database.cursor()
     scoreTimestamp = datetime.datetime.now()
     sql = "INSERT INTO breakBeam (timestamp, score) VALUES (%s, %s)"
     val = (scoreTimestamp, score)
@@ -286,6 +288,8 @@ def gameplay(secondes):
     eind_tijd = start_tijd + datetime.timedelta(seconds=secondes)
     global score
     score = 0
+    database = connect_to_database()
+    cursor = database.cursor()
     while datetime.datetime.now() < eind_tijd:
         resterend_tijd = eind_tijd - datetime.datetime.now()
         LCDvars('Time:', resterend_tijd.seconds,'Score:', score)

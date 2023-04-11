@@ -33,7 +33,7 @@ def write_to_file(contents, filename):
 def display_html_file(filename):
     webbrowser.open(filename)
 
-def main():
+def breakBeamTable():
     database = connect_to_database()
     cursor = database.cursor()
     result = get_break_beam_data(cursor)
@@ -65,5 +65,5 @@ def main():
     database.close()
     print("MySQL connection is closed.")
 
-if __name__ == '__main__':
-    main()
+if __name__ == '__breakBeamTable__':
+    breakBeamTable()
