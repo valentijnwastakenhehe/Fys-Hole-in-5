@@ -30,12 +30,10 @@ def write_to_file(contents, filename):
     with open(filename, 'w') as f:
         f.write(contents)
 
-def display_html_file(filename):
-    webbrowser.open(filename)
-
 def breakBeamTable():
     database = connect_to_database()
     cursor = database.cursor()
+    print('connected to database')
     result = get_break_beam_data(cursor)
     contents = '''<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     <html>
@@ -60,10 +58,9 @@ def breakBeamTable():
     ''' % generate_html_table(result)
     filename = 'templates/breakBeam.html'
     write_to_file(contents, filename)
-    display_html_file(filename)
     cursor.close()
     database.close()
     print("MySQL connection is closed.")
 
-if __name__ == '__breakBeamTable__':
+if __name__ == '__main__':
     breakBeamTable()

@@ -66,6 +66,7 @@ wpi.pinMode(BEAM_10, wpi.INPUT)
  
 ####
 # cnnectie met database
+def connect_to_database():
     database = mysql.connector.connect(
         host="oege.ie.hva.nl",
         user="bruggev",
