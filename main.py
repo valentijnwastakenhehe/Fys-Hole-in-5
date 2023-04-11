@@ -467,6 +467,7 @@ def main():
         # Define variables
         global pressed
         pressed = 0
+        global score
         score = 0
         # LCD message to select mode
         LCD_Input(' ', 'Select mode')
