@@ -353,9 +353,8 @@ if __name__ == '__main__':
         print('I work son')
         time.sleep(3)
     except KeyboardInterrupt:
-        pass
+        # website stoppen als programma gestop wordt
+        servo_thread.join()
     finally:
         # LCD leeg halen
         lcd_byte(0x01, LCD_CMD)
-        # website stoppen als programma gestop wordt
-        servo_thread.join()

@@ -41,6 +41,7 @@ def hard():
     return hard_mode()
 
 @app.route('/breakBeam')
+def breakBeamTable():
     return render_template('breakBeam.html')
 
 if __name__ == '__main__':

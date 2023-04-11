@@ -1,7 +1,6 @@
 import webbrowser
 import mysql.connector
 
-
 database = mysql.connector.connect(
   host="oege.ie.hva.nl",
   user="bruggev",
@@ -12,7 +11,7 @@ database = mysql.connector.connect(
 # Create a cursor object for executing SQL queries
 cursor = database.cursor()
 
-breakBeam = """SELECT timestamp, score FROM breakBeam"""
+breakBeam = "SELECT timestamp, score FROM breakBeam"
 
 cursor.execute(breakBeam)
 
@@ -20,14 +19,14 @@ result = cursor.fetchall()
 
 p = []
 
-tbl = "<tr><td>Timestamp&emsp;</td><td>Score</td>"
+tbl = "<tr><th>Timestamp</th><th>Score</th></tr>"
 
 p.append(tbl)
 
 for row in result:
-    a = "<tr><td>%s&emsp;</td>"%row[0]
+    a = "<tr><td>%s</td>"%row[0]
     p.append(a)
-    b = "<td>%s</td>"%row[1]
+    b = "<td>%s</td></tr>"%row[1]
     p.append(b)
 
 
@@ -36,17 +35,24 @@ contents = '''<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <head>
 <meta content="text/html; charset=ISO-8859-1"
 http-equiv="content-type">
-<title>Python Webbrowser</title>
+<title>Break beam data</title>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+</style>
 </head>
 <body>
 <table>
+  <caption> Score and timestamp </caption>
 %s
 </table>
 </body>
 </html>
 '''%(p)
 
-filename = 'breakBeam.html'
+filename = 'templates/breakBeam.html'
 
 def main(contents, filename):
     output = open(filename,"w")
