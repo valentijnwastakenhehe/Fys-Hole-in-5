@@ -41,7 +41,11 @@ HARD_BUTTON_PIN = 31 #fysiek 28 (SCL.3)
 SERVO_PIN = 1 #12 fysiek (pwm)
 
 # Break beam sensor
-BEAM_10 = 3
+BEAM_5 = 3
+BEAM_10 = 21
+BEAM_15 = 22
+BEAM_20 = 23
+BEAM_25 = 24
 
 # Flask for webserver
 app = Flask(__name__, template_folder='templates')
@@ -62,8 +66,12 @@ wpi.pinMode(HARD_BUTTON_PIN, wpi.INPUT)
 wpi.pinMode(SERVO_PIN, wpi.PWM_OUTPUT)
 
 #break beam
+wpi.pinMode(BEAM_5, wpi.INPUT)
 wpi.pinMode(BEAM_10, wpi.INPUT)
- 
+wpi.pinMode(BEAM_15, wpi.INPUT)
+wpi.pinMode(BEAM_20, wpi.INPUT)
+wpi.pinMode(BEAM_25, wpi.INPUT)
+
 #### Ultrasonic + database
 # connectie met database
 def connect_to_database():
@@ -354,8 +362,8 @@ def LCDvars(input1, var1, input2, var2):
     message2 = str(input2) + ' ' + str(var2)
     LCD_Input(message1, message2)
 
-#### Break beam data 
-# Break beam data versturen naar database 
+#### Break beam data
+# Break beam data versturen naar database
 def breakBeamData(cursor, database, score):
     database = connect_to_database()  # functie connect_to_database wordt gebruikt om verbinding te maken met database
     cursor = database.cursor()
@@ -372,7 +380,7 @@ def get_break_beam_data(cursor): #functie die de tabel data returned
     return cursor.fetchall()
 
 # functie die een list variable opslaat om een tabel in html te creëren met kopjes te returnen
-def breakBeamHTMLTable(result): 
+def breakBeamHTMLTable(result):
     p = []
     tbl = "<tr><th>Timestamp</th><th>Score</th></tr>"
     p.append(tbl)
@@ -432,12 +440,12 @@ def gameplay(secondes):
     while datetime.datetime.now() < eind_tijd:
         resterend_tijd = eind_tijd - datetime.datetime.now()
         LCDvars('Time:', resterend_tijd.seconds,'Score:', score)
-        beamTen_state = wpi.digitalRead(BEAM_10)
-        if beamTen_state == wpi.LOW:
-            score += 10
-#            print(score)
-            t = threading.Thread(target=breakBeamData, args=(cursor, database, score))
-            t.start()
+        beams = {BEAM_5: 5, BEAM_10: 10, BEAM_15: 15, BEAM_20: 20, BEAM_25: 25} # Dictionary om break beam score en definitie op te slaan 
+        for beam, beam_score in beams.items(): # loop door de dictionary beams met key en value (score en definitie)
+            if wpi.digitalRead(beam) == wpi.LOW: # beam is de key
+                score += beam_score # beam_score is de value
+                breakBeamThread = threading.Thread(target=breakBeamData, args=(cursor, database, score)) # thread van breakbeam om data naar database te versturen
+                breakBeamThread.start()
 
 ####
 # Play again function
@@ -449,6 +457,42 @@ def playAgain():
         global pressed
         pressed = 1
 
+def main():
+while True:
+            # Ultrasoinc
+    Ultrasonic ()
+            # LCD, with wait times
+    LCD_Start(2, 0.8)
+            # Define variables
+    global pressed
+    pressed = 0
+    score = 0
+            # LCD message to select mode
+    LCD_Input(' ', 'Select mode')
+            # Loop to continuously look for a signal from a button
+    while pressed == 0:
+                # Scan buttons and move servo
+        easyMode()
+        mediumMode()
+        hardMode()
+            # Get input from break beam sensors, keep score and time
+    gameplay(tijd)
+    breakBeamTable()
+    if score < 70:
+        LCDvar1('Score:', score, 'Keep trying!')
+        time.sleep(5)
+    elif score >= 70 and score < 400:
+        LCDvar1('Score:', score, 'Young padawan')
+        time.sleep(5)
+    else:
+        LCDvar1('Score:', score, 'Sensei')
+        time.sleep(5)
+    LCD_Input('Play again?', 'Press green!!')
+    pressed = 0
+    while pressed == 0:
+        playAgain()
+    lcd_byte(0x01, LCD_CMD)
+
 ####
 # Main game code 
 # Handling keyboard interrupts and exception utility
@@ -459,43 +503,8 @@ if __name__ == '__main__':
     servo_thread.start()
 
     try:
-        while True:
-            # Ultrasoinc
-            Ultrasonic ()
-            # LCD, with wait times
-            LCD_Start(2, 0.8)
-            # Define variables
-            global pressed
-            pressed = 0
-            score = 0
-            # LCD message to select mode
-            LCD_Input(' ', 'Select mode')
-            # Loop to continuously look for a signal from a button
-            while pressed == 0:
-                # Scan buttons and move servo
-                easyMode()
-                mediumMode()
-                hardMode()
-            # Get input from break beam sensors, keep score and time
-            gameplay(tijd)
-            breakBeamTable()
-            if score < 70:
-                LCDvar1('Score:', score, 'Keep trying!')
-                time.sleep(5)
-            elif score >= 70 and score < 400:
-                LCDvar1('Score:', score, 'Young padawan')
-                time.sleep(5)
-            else:
-                LCDvar1('Score:', score, 'Sensei')
-                time.sleep(5)
-            LCD_Input('Play again?', 'Press green!!')
-            pressed = 0
-            while pressed == 0:
-                playAgain()
-            lcd_byte(0x01, LCD_CMD)
+        main()
 
-        print('I work son')
-        time.sleep(3)
     except KeyboardInterrupt:
         # website stoppen als programma gestopt wordt
         servo_thread.join()
