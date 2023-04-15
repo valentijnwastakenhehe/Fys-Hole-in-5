@@ -437,7 +437,7 @@ def gameplay(secondes):
     while datetime.datetime.now() < eind_tijd:
         resterend_tijd = eind_tijd - datetime.datetime.now()
         LCDvars('Time:', resterend_tijd.seconds,'Score:', score)
-        beams = {BEAM_5: 5, BEAM_10: 10, BEAM_15: 15, BEAM_20: 20, BEAM_25: 25} # Dictionary om break beam score en definitie op te slaan 
+        beams = {BEAM_5: 5, BEAM_10: 10, BEAM_15: 15, BEAM_20: 25, BEAM_25: 25} # Dictionary om break beam score en definitie op te slaan 
         for beam, beam_score in beams.items(): # loop door de dictionary beams met key en value (score en definitie)
             if wpi.digitalRead(beam) == wpi.LOW: # beam is de key
                 score += beam_score # beam_score is de value
