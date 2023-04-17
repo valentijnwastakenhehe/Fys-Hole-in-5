@@ -20,8 +20,24 @@ De data van de ultrasonic (tijd en afstand) en break beam snesor (tijd en score)
 ## Installatie
 Ik heb Ubuntu gedownload op mijn odroid (zie support voor meer informatie) om als operating system te gebruiken. Verder heb ik de wiringpi library gebruikt samen met mysql, python3 en git om mijn project veilig te stellen op een alternatieve plek.
 
+## Fotos
+### De fysieke kast
+![](../../images/spel_kast.png)
+### Mijn aansluit schema
+![](../../images/technische tekening.png)
+Zoals te zien is heb ik in de technische tekening alleen een IR ontvanger getekend. In de daadwerkelijke aansluiting is er ook een zender die aangesloten is op de ground en 3.3V. Verder zijn niet alle IR ontvangers opgenomen in de technische tekening. Die zijn precies hetzelfde aangesloten als degene die wel opgenomen is in de technische tekening.
+### Servo gedetaileerd
+![](../../images/servo.png)
+### Odroid plek in kast
+![](../../images/odroidHoek.png)
+### Knoppen, LCD en Ultrasonic sensor
+![](../../images/knoppen_LCD.png)
+### Break beam sensoren
+![](../../images/breakBeam.png)
+
 ## Support
 Voor meer informatie over de wiringpi library kan je hier terecht: http://wiringpi.com
+
 Voor meer informatie over de Odroid N2+ kan je hier terecht: https://wiki.odroid.com/odroid-n2/odroid-n2
 
 ## Roadmap
