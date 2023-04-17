@@ -468,7 +468,7 @@ def main():
         global score
         score = 0
         # LCD message to select mode
-        LCD_Input(' ', 'Select mode')
+        LCD_Input('Select Mode!!', ' ')
         # Loop to continuously look for a signal from a button
         while pressed == 0:
             # Scan buttons and move servo
