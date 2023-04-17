@@ -41,8 +41,9 @@ Voor meer informatie over de wiringpi library kan je hier terecht: http://wiring
 Voor meer informatie over de Odroid N2+ kan je hier terecht: https://wiki.odroid.com/odroid-n2/odroid-n2
 
 ## Roadmap
-Ik zou graag nog een break beam sensor toe willen voegen bij het grootste gat om accurater te meten. 
-Daarnaast zou ik de website knoppen willen geven in plaats van dat je met een link naar de verschillende opties moet navigeren.
+Ik zou graag nog een break beam sensor toe willen voegen bij het grootste gat om accurater te kunnen meten. 
+Daarnaast zou ik de website "knoppen" willen geven om op de klikken in plaats van dat je met een link naar de verschillende opties moet navigeren.
+Ook zou een reset knop handig zijn
 
 ## Authors and acknowledgment
 Met dank aan Jack Zwuup voor het helpen opzetten van een database en website!
